@@ -105,6 +105,13 @@
     scroll-behavior: smooth;
   }
 
+  html,
+  body {
+    /* Never allow the page itself to scroll sideways on mobile */
+    overflow-x: hidden;
+    max-width: 100%;
+  }
+
   body {
     background-color: var(--color-background);
     color: var(--color-text);

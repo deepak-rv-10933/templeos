@@ -78,6 +78,8 @@ export const strings = {
   common: {
     openNow: { ta: 'இப்போது திறந்துள்ளது', en: 'Open now' },
     closed: { ta: 'மூடப்பட்டுள்ளது', en: 'Closed' },
+    open: { ta: 'திறந்து', en: 'Open' },
+    shut: { ta: 'மூடி', en: 'Closed' },
     live: { ta: 'நேரலை', en: 'Live' },
     km: { ta: 'கி.மீ', en: 'km' },
     followers: { ta: 'பின்தொடர்பவர்கள்', en: 'followers' },

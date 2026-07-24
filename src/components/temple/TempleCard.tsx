@@ -22,10 +22,10 @@ export function TempleCard({ temple }: { temple: Temple }) {
         <div className="absolute left-3 top-3 flex gap-2">
           {temple.isOpenNow ? (
             <Badge tone="success" dot>
-              {t('common.openNow')}
+              {t('common.open')}
             </Badge>
           ) : (
-            <Badge tone="default">{t('common.closed')}</Badge>
+            <Badge tone="default">{t('common.shut')}</Badge>
           )}
         </div>
         {temple.distanceKm !== undefined && (
