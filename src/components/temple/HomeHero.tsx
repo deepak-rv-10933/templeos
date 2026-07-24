@@ -90,8 +90,9 @@ export function HomeHero({ templeCount }: { templeCount?: string }) {
               className="h-13 w-full rounded-full border border-white/20 bg-surface pl-12 pr-4 text-body text-text shadow-lg placeholder:text-muted focus:border-primary"
             />
           </div>
-          <Button type="submit" size="lg" className="rounded-full shadow-lg">
-            {t('action.search')}
+          <Button type="submit" size="lg" className="rounded-full px-5 shadow-lg sm:px-7">
+            <Search className="h-5 w-5 sm:hidden" />
+            <span className="hidden sm:inline">{t('action.search')}</span>
           </Button>
         </form>
 
