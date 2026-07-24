@@ -4,6 +4,10 @@
  * URLs without touching db.ts. <SmartImage> renders any URL as a lazy <img>.
  */
 
+/** Home-page cover: the towering Srirangam Rajagopuram over the temple town. */
+export const homeCover =
+  'https://upload.wikimedia.org/wikipedia/commons/thumb/c/cf/Aerial_view_of_Sri_Rangam_temple_near_Tiruchirapalli_1.jpg/1920px-Aerial_view_of_Sri_Rangam_temple_near_Tiruchirapalli_1.jpg';
+
 export const heroes: Record<string, string> = {
   "t-meenakshi": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e9/An_aerial_view_of_Madurai_city_from_atop_of_Meenakshi_Amman_temple.jpg/1280px-An_aerial_view_of_Madurai_city_from_atop_of_Meenakshi_Amman_temple.jpg",
   "t-brihadeeswarar": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Brihadisvara_Temple_during_Maha_Shivaratri-WUS03611_%28edit%29.jpg/1280px-Brihadisvara_Temple_during_Maha_Shivaratri-WUS03611_%28edit%29.jpg",

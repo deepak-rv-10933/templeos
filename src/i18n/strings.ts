@@ -35,11 +35,22 @@ export const strings = {
   },
 
   home: {
-    heroTitle: { ta: 'கோயில்களைக் கண்டறியுங்கள்', en: 'Discover every temple' },
+    badge: {
+      ta: 'அதிகாரப்பூர்வ HR&CE டிஜிட்டல் தளம் · தமிழ்நாடு',
+      en: 'Official HR&CE Digital Platform · Tamil Nadu',
+    },
+    heroTitle: { ta: 'அனைவரும் வருக', en: 'Welcome, one and all' },
+    coverSubtitle: {
+      ta: 'தமிழ்நாட்டின் புனிதத் தலங்களைக் கண்டறியுங்கள்',
+      en: "Discover Tamil Nadu's Sacred Temples",
+    },
     heroSubtitle: {
       ta: 'தமிழ்நாட்டின் 46,000+ கோயில்கள். ஒரே இடத்தில் தரிசனம், முன்பதிவு, யாத்திரை.',
       en: 'Darshan, bookings and pilgrimage across 46,000+ temples of Tamil Nadu.',
     },
+    templesWord: { ta: 'கோயில்கள்', en: 'temples' },
+    districtsWord: { ta: 'மாவட்டங்கள்', en: 'districts' },
+    onePlatform: { ta: 'ஒரே தளம்', en: 'One platform' },
     searchPlaceholder: { ta: 'கோயில், ஊர் அல்லது தெய்வம் தேடுங்கள்', en: 'Search a temple, town or deity' },
     featured: { ta: 'சிறப்புக் கோயில்கள்', en: 'Featured temples' },
     nearby: { ta: 'அருகிலுள்ள கோயில்கள்', en: 'Nearby temples' },

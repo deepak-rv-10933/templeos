@@ -10,5 +10,6 @@ export { SponsorCard } from './SponsorCard';
 export { QRCard } from './QRCard';
 export { JourneyCard } from './JourneyCard';
 export { HeroBanner } from './HeroBanner';
+export { HomeHero } from './HomeHero';
 export { GalleryGrid } from './GalleryGrid';
 export { TempleMap } from './TempleMap';
