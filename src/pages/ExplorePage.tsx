@@ -49,8 +49,9 @@ export function ExplorePage() {
 
   const [search, setSearch] = useState(params.get('search') ?? '');
   const category = (params.get('category') as TempleCategoryKey | null) ?? undefined;
-  const [districtId, setDistrictId] = useState<string>('');
-  const [openNow, setOpenNow] = useState(false);
+  const [districtId, setDistrictId] = useState<string>(params.get('district') ?? '');
+  const [openNow, setOpenNow] = useState(params.get('openNow') === '1');
+  const [selectedId, setSelectedId] = useState<string | undefined>();
 
   const districts = useDistricts();
 
@@ -176,7 +177,19 @@ export function ExplorePage() {
             description={tx({ ta: 'வேறு வடிகட்டியை முயற்சிக்கவும்.', en: 'Try adjusting your filters.' })}
           />
         ) : view === 'map' ? (
-          <TempleMap temples={temples.data ?? []} className="h-[60vh] min-h-96" />
+          <div className="space-y-5">
+            <TempleMap
+              temples={temples.data ?? []}
+              selectedId={selectedId}
+              onSelect={(tpl) => setSelectedId(tpl.id)}
+              className="h-[55vh] min-h-80"
+            />
+            <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+              {temples.data?.map((tpl) => (
+                <TempleCard key={tpl.id} temple={tpl} />
+              ))}
+            </div>
+          </div>
         ) : view === 'list' ? (
           <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
             {temples.data?.map((tpl) => <TempleCard key={tpl.id} temple={tpl} />)}

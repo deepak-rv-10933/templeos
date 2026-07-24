@@ -5,6 +5,7 @@ import { BottomNav } from '@/components/layout/BottomNav';
 import { Footer } from '@/components/layout/Footer';
 import { ScrollToTop } from '@/components/layout/ScrollToTop';
 import { PageLoader } from '@/components/common/PageLoader';
+import { AskAI } from '@/features/ai/AskAI';
 
 /** Public application shell — desktop top nav + mobile bottom nav (spec §5). */
 export function AppShell() {
@@ -20,6 +21,7 @@ export function AppShell() {
       <Footer />
       {/* Spacer so the fixed bottom nav never covers footer content on mobile */}
       <div className="h-16 md:hidden" aria-hidden />
+      <AskAI />
       <BottomNav />
     </div>
   );

@@ -4,10 +4,10 @@
  * URLs without touching db.ts. <SmartImage> renders any URL as a lazy <img>.
  */
 
-/** Home-page cover: close-up of the colourful Srirangam gopuram with the iconic
- *  white Rajagopuram behind (Wikimedia Commons, CC-licensed). */
+/** Home-page cover: aerial view of the Srirangam Rajagopuram over the temple
+ *  town (Wikimedia Commons, CC-licensed). */
 export const homeCover =
-  'https://upload.wikimedia.org/wikipedia/commons/thumb/0/07/Ranganathaswamy_Temple%2C_Srirangam%2C_Trichy_Vaishnavism_India.jpg/1920px-Ranganathaswamy_Temple%2C_Srirangam%2C_Trichy_Vaishnavism_India.jpg';
+  'https://upload.wikimedia.org/wikipedia/commons/thumb/c/cf/Aerial_view_of_Sri_Rangam_temple_near_Tiruchirapalli_1.jpg/1920px-Aerial_view_of_Sri_Rangam_temple_near_Tiruchirapalli_1.jpg';
 
 export const heroes: Record<string, string> = {
   "t-meenakshi": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e9/An_aerial_view_of_Madurai_city_from_atop_of_Meenakshi_Amman_temple.jpg/1280px-An_aerial_view_of_Madurai_city_from_atop_of_Meenakshi_Amman_temple.jpg",
