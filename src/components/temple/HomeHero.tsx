@@ -41,7 +41,6 @@ export function HomeHero({ templeCount }: { templeCount?: string }) {
         loading="eager"
         fetchPriority="high"
         className="absolute inset-0 -z-10 h-full w-full object-cover"
-        style={{ objectPosition: 'center 42%' }}
       />
       {/* Dark violet scrim for text legibility over the colourful image */}
       <div
