@@ -36,11 +36,11 @@ export function HomePage() {
   const kpis = useKpis();
 
   return (
-    <div className="pb-8">
+    <div>
       {/* Full-bleed cover hero (Srirangam) */}
       <HomeHero templeCount={kpis.data?.[0]?.value} />
 
-      <div className="space-y-12 py-10">
+      <div className="space-y-12 pt-10">
         {/* Continue your journey — bookings, saved temples, passport */}
         <ContinueJourney />
 
