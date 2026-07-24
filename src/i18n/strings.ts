@@ -41,8 +41,12 @@ export const strings = {
     },
     heroTitle: { ta: 'அனைவரும் வருக', en: 'Welcome, one and all' },
     coverSubtitle: {
-      ta: 'தமிழ்நாட்டின் புனிதத் தலங்களைக் கண்டறியுங்கள்',
-      en: "Discover Tamil Nadu's Sacred Temples",
+      ta: 'இறைவன் அருள் அனைவருக்கும்',
+      en: "The Lord's grace, for one and all",
+    },
+    heroTagline: {
+      ta: 'தமிழ்நாட்டின் புனிதத் தலங்களைக் கண்டறிந்து முன்பதிவு செய்து இணையுங்கள்',
+      en: 'Discover, book and connect with the sacred temples of Tamil Nadu',
     },
     heroSubtitle: {
       ta: 'தமிழ்நாட்டின் 46,000+ கோயில்கள். ஒரே இடத்தில் தரிசனம், முன்பதிவு, யாத்திரை.',

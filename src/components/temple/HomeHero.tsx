@@ -17,8 +17,8 @@ const chips: { label: { ta: string; en: string }; to: string; icon: LucideIcon }
 ];
 
 /** Full-bleed cover hero — Srirangam Rajagopuram behind a calm dark scrim. */
-export function HomeHero({ templeCount }: { templeCount?: string }) {
-  const { t, tx, lang } = useLocale();
+export function HomeHero() {
+  const { t, lang } = useLocale();
   const navigate = useNavigate();
   const [q, setQ] = useState('');
 
@@ -67,16 +67,10 @@ export function HomeHero({ templeCount }: { templeCount?: string }) {
         <h1 className="mt-6 text-h1 font-bold text-white drop-shadow-[0_2px_24px_rgba(0,0,0,0.45)] sm:text-display">
           {t('home.heroTitle')}
         </h1>
-        <p className="mt-3 text-body-lg text-white/90 md:text-h4">{t('home.coverSubtitle')}</p>
+        <p className="mt-3 text-body-lg text-white/95 md:text-h4">{t('home.coverSubtitle')}</p>
 
-        {/* Stats */}
-        <p className="mt-4 text-caption text-white/75 md:text-body">
-          {templeCount ?? '46,218'} {tx({ ta: 'கோயில்கள்', en: 'temples' })}
-          <span className="mx-2">·</span>
-          38 {tx({ ta: 'மாவட்டங்கள்', en: 'districts' })}
-          <span className="mx-2">·</span>
-          {t('home.onePlatform')}
-        </p>
+        {/* Descriptive line */}
+        <p className="mt-2 max-w-xl text-caption text-white/80 md:text-body">{t('home.heroTagline')}</p>
 
         {/* Search — compact input + circular button */}
         <form onSubmit={submit} className="mt-7 flex w-full max-w-lg gap-2">

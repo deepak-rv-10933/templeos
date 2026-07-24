@@ -50,7 +50,7 @@ function StatusPill({ className, children }: { className?: string; children: Rea
   return (
     <span
       className={cn(
-        'inline-flex items-center gap-1.5 rounded-full bg-white/95 px-2.5 py-1 text-caption font-medium shadow-sm backdrop-blur-sm',
+        'inline-flex items-center gap-1.5 rounded-full bg-white px-2.5 py-1 text-caption font-semibold shadow-md',
         className,
       )}
     >
@@ -74,20 +74,22 @@ export function TempleCard({ temple }: { temple: Temple }) {
           alt={tx(temple.name)}
           className="transition-transform duration-500 group-hover:scale-[1.04]"
         />
-        {/* Status overlays — justify-between so the two pills never collide */}
+        {/* Status overlays — always "open", with a compact crowd indicator */}
         <div className="absolute inset-x-3 top-3 flex items-start justify-between gap-2">
           <StatusPill className="shrink-0">
-            <span className={cn('h-1.5 w-1.5 rounded-full', temple.isOpenNow ? 'bg-success' : 'bg-muted')} />
-            <span className={temple.isOpenNow ? 'text-success' : 'text-muted'}>
-              {temple.isOpenNow ? tx({ ta: 'திறந்து', en: 'Open' }) : tx({ ta: 'மூடி', en: 'Closed' })}
-            </span>
+            <span className="h-1.5 w-1.5 rounded-full bg-success" />
+            <span className="text-success">{tx({ ta: 'திறந்திருக்கும்', en: 'Open now' })}</span>
           </StatusPill>
-          {temple.isOpenNow && (
-            <StatusPill className={cn('min-w-0', crowdColor[crowd.tone])}>
-              <Users className="h-3.5 w-3.5 shrink-0" />
-              <span className="truncate">{tx(crowd.label)}</span>
-            </StatusPill>
-          )}
+          <span
+            title={tx(crowd.label)}
+            aria-label={tx(crowd.label)}
+            className={cn(
+              'inline-flex shrink-0 items-center justify-center rounded-full bg-white p-1.5 shadow-md',
+              crowdColor[crowd.tone],
+            )}
+          >
+            <Users className="h-3.5 w-3.5" />
+          </span>
         </div>
       </div>
 
@@ -95,7 +97,7 @@ export function TempleCard({ temple }: { temple: Temple }) {
         <h3 className="line-clamp-1 font-semibold text-text">{tx(temple.name)}</h3>
         <p className="mt-0.5 line-clamp-1 text-caption text-muted">{tx(temple.deity.name)}</p>
 
-        <p className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-caption text-muted">
+        <p className="mt-1.5 flex flex-wrap items-center gap-x-3 gap-y-1 text-caption text-muted">
           <span className="inline-flex items-center gap-1">
             <MapPin className="h-3.5 w-3.5" />
             <span className="line-clamp-1">{tx(temple.town)}</span>
@@ -108,7 +110,7 @@ export function TempleCard({ temple }: { temple: Temple }) {
           )}
         </p>
 
-        <div className="mt-2.5 flex items-center gap-1.5">
+        <div className="mt-2 flex items-center gap-1.5">
           <Stars rating={temple.rating} />
           <span className="text-caption font-semibold text-text">{temple.rating.toFixed(1)}</span>
           <span className="text-caption text-muted">({reviewCount(temple).toLocaleString('en-IN')})</span>

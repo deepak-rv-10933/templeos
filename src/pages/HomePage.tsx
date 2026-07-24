@@ -2,7 +2,6 @@ import { useLocale } from '@/store/locale';
 import {
   useCategories,
   useFeaturedTemples,
-  useKpis,
   useLiveFestivals,
   useRoutes,
 } from '@/hooks/queries';
@@ -33,14 +32,13 @@ export function HomePage() {
   const categories = useCategories();
   const festivals = useLiveFestivals();
   const routes = useRoutes();
-  const kpis = useKpis();
 
   return (
     <div>
       {/* Full-bleed cover hero (Srirangam) */}
-      <HomeHero templeCount={kpis.data?.[0]?.value} />
+      <HomeHero />
 
-      <div className="space-y-12 pt-10">
+      <div className="space-y-10 pt-10">
         {/* Continue your journey — bookings, saved temples, passport */}
         <ContinueJourney />
 
