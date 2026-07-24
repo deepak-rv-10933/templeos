@@ -9,9 +9,10 @@ type CrowdTone = 'low' | 'moderate' | 'heavy';
 
 /** Deterministic crowd level derived from popularity (mock stand-in for live data). */
 function crowdLevel(temple: Temple): { label: LocalizedText; tone: CrowdTone } {
-  if (temple.followers > 150000) return { label: { ta: 'அதிக கூட்டம்', en: 'Heavy crowd' }, tone: 'heavy' };
-  if (temple.followers > 80000) return { label: { ta: 'மிதமான கூட்டம்', en: 'Moderate crowd' }, tone: 'moderate' };
-  return { label: { ta: 'குறைந்த கூட்டம்', en: 'Low crowd' }, tone: 'low' };
+  // Tamil kept to the level word (the people icon signals "crowd"); English fits full.
+  if (temple.followers > 150000) return { label: { ta: 'அதிக', en: 'Heavy crowd' }, tone: 'heavy' };
+  if (temple.followers > 80000) return { label: { ta: 'மிதமான', en: 'Moderate crowd' }, tone: 'moderate' };
+  return { label: { ta: 'குறைந்த', en: 'Low crowd' }, tone: 'low' };
 }
 
 const crowdColor: Record<CrowdTone, string> = {
