@@ -61,15 +61,18 @@ export function AskAI() {
       <button
         onClick={() => setOpen(true)}
         className="fixed bottom-20 right-4 z-40 inline-flex items-center gap-2 rounded-full bg-primary px-4 py-3 font-medium text-primary-foreground shadow-lg transition-all hover:bg-primary-hover active:scale-95 md:bottom-6 md:right-6"
-        aria-label={tx({ ta: 'AI-யிடம் கேள்', en: 'Ask AI' })}
+        aria-label={tx({ ta: 'நந்தியிடம் கேள்', en: 'Ask Nandi' })}
       >
         <Sparkles className="h-5 w-5" />
-        <span className="hidden sm:inline">{tx({ ta: 'AI-யிடம் கேள்', en: 'Ask AI' })}</span>
+        <span className="hidden sm:inline">{tx({ ta: 'நந்தியிடம் கேள்', en: 'Ask Nandi' })}</span>
       </button>
 
-      <Dialog open={open} onClose={() => setOpen(false)} title={tx({ ta: 'AI கோயில் தேடல்', en: 'AI Temple Search' })}>
+      <Dialog open={open} onClose={() => setOpen(false)} title={tx({ ta: 'நந்தியிடம் கேள்', en: 'Ask Nandi' })}>
         <p className="-mt-2 mb-4 text-body text-muted">
-          {tx({ ta: 'நீங்கள் தேடுவதை விவரியுங்கள்', en: "Describe what you're looking for" })}
+          {tx({
+            ta: 'உங்கள் ஆன்மீக கோயில் வழிகாட்டி. நீங்கள் தேடுவதை விவரியுங்கள்.',
+            en: 'Your spiritual temple guide — describe what you’re looking for.',
+          })}
         </p>
 
         <div className="mb-2 text-caption font-semibold uppercase tracking-wide text-muted">
