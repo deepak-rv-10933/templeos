@@ -61,6 +61,31 @@ src/
   utils/        cn, format, icons
 ```
 
+## Deploying to Zoho Catalyst Slate
+
+This app is a Vite + React SPA — deploy it on Slate with Git-based hosting:
+
+1. In the Catalyst console, open your project → **Slate** → **Start Exploring** (one-time).
+2. Create a Slate app and connect this GitHub repo (`deepak-rv-10933/templeos`).
+3. Settings (Slate auto-detects most of these):
+   - **Framework:** `React (Vite)` — i.e. `react-vite` (gives SPA fallback so deep
+     links like `/explore` and `/temple/:slug` resolve; do **not** pick `static`).
+   - **Build command:** `npm run build`
+   - **Output directory:** `dist`
+   - **Base path:** leave at root `/` (this repo sets no Vite `base`, so assets
+     serve correctly from root — setting a base path would 404 every asset).
+
+CLI alternative:
+
+```bash
+catalyst slate:create --name templeos --framework react-vite --default
+catalyst deploy slate -m "initial deploy"
+```
+
+> When you later add Catalyst Functions and call them from this Slate app, add the
+> Slate domain under Authentication → Whitelisting (enable CORS) and let the gateway
+> inject CORS headers — don't set them in function code for production origins.
+
 ## Swapping mock → Catalyst
 
 The UI depends only on the `Api` interface (`src/services/api.types.ts`). To move
