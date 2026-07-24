@@ -73,26 +73,21 @@ export function TempleCard({ temple }: { temple: Temple }) {
           alt={tx(temple.name)}
           className="transition-transform duration-500 group-hover:scale-[1.04]"
         />
-        {/* Open / closed */}
-        <div className="absolute left-3 top-3">
-          <StatusPill>
+        {/* Status overlays — justify-between so the two pills never collide */}
+        <div className="absolute inset-x-3 top-3 flex items-start justify-between gap-2">
+          <StatusPill className="shrink-0">
             <span className={cn('h-1.5 w-1.5 rounded-full', temple.isOpenNow ? 'bg-success' : 'bg-muted')} />
             <span className={temple.isOpenNow ? 'text-success' : 'text-muted'}>
-              {temple.isOpenNow
-                ? tx({ ta: 'திறந்திருக்கும்', en: 'Open now' })
-                : tx({ ta: 'மூடியுள்ளது', en: 'Closed' })}
+              {temple.isOpenNow ? tx({ ta: 'திறந்து', en: 'Open' }) : tx({ ta: 'மூடி', en: 'Closed' })}
             </span>
           </StatusPill>
-        </div>
-        {/* Crowd level (only while open) */}
-        {temple.isOpenNow && (
-          <div className="absolute right-3 top-3">
-            <StatusPill className={crowdColor[crowd.tone]}>
-              <Users className="h-3.5 w-3.5" />
-              {tx(crowd.label)}
+          {temple.isOpenNow && (
+            <StatusPill className={cn('min-w-0', crowdColor[crowd.tone])}>
+              <Users className="h-3.5 w-3.5 shrink-0" />
+              <span className="truncate">{tx(crowd.label)}</span>
             </StatusPill>
-          </div>
-        )}
+          )}
+        </div>
       </div>
 
       <div className="p-4">
