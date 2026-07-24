@@ -21,6 +21,14 @@ import type {
   TempleCategory,
   User,
 } from '@/types';
+import {
+  heroes,
+  galleries,
+  festivalImages,
+  routeImages,
+  renovationImages,
+  feedMedia,
+} from './images';
 
 /* -- reference data -------------------------------------------------------- */
 
@@ -210,7 +218,7 @@ export const temples: Temple[] = [
     location: { lat: 9.9195, lng: 78.1193 },
     heroImage:
       'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e9/An_aerial_view_of_Madurai_city_from_atop_of_Meenakshi_Amman_temple.jpg/1280px-An_aerial_view_of_Madurai_city_from_atop_of_Meenakshi_Amman_temple.jpg',
-    gallery: ['meenakshi-1', 'meenakshi-2', 'meenakshi-3', 'meenakshi-4'],
+    gallery: galleries['t-meenakshi'],
     shortDescription: {
       ta: 'ஆயிரம் கால் மண்டபமும் வண்ணமயமான கோபுரங்களும் கொண்ட மதுரையின் இதயம்.',
       en: 'The beating heart of Madurai, famed for its 14 towering gopurams.',
@@ -248,7 +256,7 @@ export const temples: Temple[] = [
     location: { lat: 10.782, lng: 79.1315 },
     heroImage:
       'https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Brihadisvara_Temple_during_Maha_Shivaratri-WUS03611_%28edit%29.jpg/1280px-Brihadisvara_Temple_during_Maha_Shivaratri-WUS03611_%28edit%29.jpg',
-    gallery: ['brihadeeswarar-1', 'brihadeeswarar-2', 'brihadeeswarar-3'],
+    gallery: galleries['t-brihadeeswarar'],
     shortDescription: {
       ta: 'ஆயிரம் ஆண்டுகள் பழமையான சோழர் கட்டிடக்கலையின் உச்சம் — யுனெஸ்கோ பாரம்பரிய தலம்.',
       en: 'The thousand-year Chola masterpiece — a UNESCO World Heritage Site.',
@@ -285,7 +293,7 @@ export const temples: Temple[] = [
     location: { lat: 9.2881, lng: 79.3174 },
     heroImage:
       'https://upload.wikimedia.org/wikipedia/commons/thumb/8/84/Ramanathaswamy_temple7.JPG/1280px-Ramanathaswamy_temple7.JPG',
-    gallery: ['ramanathaswamy-1', 'ramanathaswamy-2'],
+    gallery: galleries['t-ramanathaswamy'],
     shortDescription: {
       ta: 'உலகின் மிக நீளமான கோயில் தாழ்வாரங்களைக் கொண்ட புனித தீவுத் தலம்.',
       en: 'The sacred island temple with the longest corridors in the world.',
@@ -319,7 +327,7 @@ export const temples: Temple[] = [
     location: { lat: 10.8624, lng: 78.6897 },
     heroImage:
       'https://upload.wikimedia.org/wikipedia/commons/thumb/9/99/Ranganathaswamy_temple_tiruchirappalli.jpg/1280px-Ranganathaswamy_temple_tiruchirappalli.jpg',
-    gallery: ['ranganathaswamy-1', 'ranganathaswamy-2', 'ranganathaswamy-3'],
+    gallery: galleries['t-ranganathaswamy'],
     shortDescription: {
       ta: '156 ஏக்கரில் பரந்த உலகின் மிகப்பெரிய செயல்படும் இந்துக் கோயில்.',
       en: 'The largest functioning Hindu temple complex in the world, across 156 acres.',
@@ -353,7 +361,7 @@ export const temples: Temple[] = [
     location: { lat: 10.4495, lng: 77.5209 },
     heroImage:
       'https://upload.wikimedia.org/wikipedia/commons/thumb/7/76/Palanihills.JPG/1280px-Palanihills.JPG',
-    gallery: ['palani-1', 'palani-2'],
+    gallery: galleries['t-palani'],
     shortDescription: {
       ta: 'குன்றின் மேல் அமைந்த முருகனின் மூன்றாம் படைவீடு.',
       en: "The third of Murugan's six abodes, atop the Palani hills.",
@@ -385,7 +393,7 @@ export const temples: Temple[] = [
     categories: ['shiva', 'padal-petra-sthalam'],
     location: { lat: 13.0337, lng: 80.2698 },
     heroImage: 'https://upload.wikimedia.org/wikipedia/commons/9/99/Kapaleeswarar1.jpg',
-    gallery: ['kapaleeshwarar-1', 'kapaleeshwarar-2'],
+    gallery: galleries['t-kapaleeshwarar'],
     shortDescription: {
       ta: 'சென்னையின் இதயத்தில் அமைந்த திராவிடக் கட்டிடக்கலைத் தலம்.',
       en: 'A landmark of Dravidian architecture in the heart of Chennai.',
@@ -418,7 +426,7 @@ export const temples: Temple[] = [
     location: { lat: 12.847, lng: 79.6996 },
     heroImage:
       'https://upload.wikimedia.org/wikipedia/commons/thumb/0/06/Ekambareswarar5.jpg/1280px-Ekambareswarar5.jpg',
-    gallery: ['ekambareswarar-1', 'ekambareswarar-2'],
+    gallery: galleries['t-ekambareswarar'],
     shortDescription: {
       ta: 'நிலம் என்ற பஞ்சபூத தலம் — 3500 ஆண்டு மாமரத்துடன்.',
       en: 'The Earth element among the five Pancha Bhoota temples, with its 3,500-year mango tree.',
@@ -451,7 +459,7 @@ export const temples: Temple[] = [
     location: { lat: 11.3995, lng: 79.6936 },
     heroImage:
       'https://upload.wikimedia.org/wikipedia/commons/4/44/Le_temple_de_Shiva_Nataraja_%28Chidambaram%2C_Inde%29_%2814037020332%29.jpg',
-    gallery: ['nataraja-1', 'nataraja-2'],
+    gallery: galleries['t-nataraja'],
     shortDescription: {
       ta: 'ஆகாயம் என்ற பஞ்சபூத தலம் — ஆனந்த தாண்டவத்தின் இருப்பிடம்.',
       en: 'The Space element temple — home of Shiva as the cosmic dancer.',
@@ -484,7 +492,7 @@ export const temples: Temple[] = [
     location: { lat: 8.4959, lng: 78.1206 },
     heroImage:
       'https://upload.wikimedia.org/wikipedia/commons/thumb/e/eb/Thiruchendur11.jpg/1280px-Thiruchendur11.jpg',
-    gallery: ['thiruchendur-1', 'thiruchendur-2'],
+    gallery: galleries['t-thiruchendur'],
     shortDescription: {
       ta: 'கடற்கரையில் அமைந்த முருகனின் இரண்டாம் படைவீடு.',
       en: "The second of Murugan's abodes, on the shore of the Bay of Bengal.",
@@ -517,7 +525,7 @@ export const temples: Temple[] = [
     location: { lat: 11.0179, lng: 79.4451 },
     heroImage:
       'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8d/Suryanar_Koil_in_Tamil_Nadu_JEG6875.jpg/1280px-Suryanar_Koil_in_Tamil_Nadu_JEG6875.jpg',
-    gallery: ['suryanar-1'],
+    gallery: galleries['t-suryanar'],
     shortDescription: {
       ta: 'சூரிய பகவானுக்கு அர்ப்பணிக்கப்பட்ட நவகிரக தலம்.',
       en: 'The Navagraha temple dedicated to the Sun god.',
@@ -538,6 +546,134 @@ export const temples: Temple[] = [
       [['11c', 'குலோத்துங்க சோழன்', 'Built under Kulottunga Chola']],
     ),
   },
+  {
+    id: 't-swamimalai',
+    slug: 'swamimalai-murugan',
+    name: { ta: 'சுவாமிமலை முருகன் கோயில்', en: 'Swamimalai Murugan Temple' },
+    deity: deities[2],
+    districtId: 'dt-thanjavur',
+    district: { ta: 'தஞ்சாவூர்', en: 'Thanjavur' },
+    town: { ta: 'சுவாமிமலை', en: 'Swamimalai' },
+    categories: ['murugan', 'arupadai-veedu'],
+    location: { lat: 10.9585, lng: 79.33 },
+    heroImage: heroes['t-swamimalai'],
+    gallery: galleries['t-swamimalai'],
+    shortDescription: {
+      ta: 'முருகன் தன் தந்தைக்கே பிரணவப் பொருள் உரைத்த நான்காம் படைவீடு.',
+      en: 'The fourth abode, where Murugan taught the meaning of Om to his own father.',
+    },
+    rating: 4.7,
+    followers: 76000,
+    isOpenNow: true,
+    timings: commonTimings,
+    poojas: poojas('swamimalai'),
+    services: services('swamimalai'),
+    facilities: commonFacilities,
+    heritage: heritage(
+      'சுவாமிநாதன் தந்தைக்கே குரு ஆன தலம்.',
+      'Where Murugan became guru to his own father, Lord Shiva.',
+      [['சோழர்', 'Chola']],
+      'அறுபது படிக்கட்டுகள் — ஆறு படைவீடுகளைக் குறிக்கும்.',
+      'Sixty steps to the sanctum, symbolising the six abodes.',
+      [['9c', 'சோழர் தலம்', 'Chola-era shrine']],
+    ),
+  },
+  {
+    id: 't-thiruthani',
+    slug: 'thiruttani-murugan',
+    name: { ta: 'திருத்தணி முருகன் கோயில்', en: 'Thiruttani Murugan Temple' },
+    deity: deities[2],
+    districtId: 'dt-chennai',
+    district: { ta: 'திருவள்ளூர்', en: 'Tiruvallur' },
+    town: { ta: 'திருத்தணி', en: 'Thiruttani' },
+    categories: ['murugan', 'arupadai-veedu'],
+    location: { lat: 13.1746, lng: 79.612 },
+    heroImage: heroes['t-thiruthani'],
+    gallery: galleries['t-thiruthani'],
+    shortDescription: {
+      ta: 'குன்றின் மேல் அமைந்த முருகனின் ஐந்தாம் படைவீடு.',
+      en: 'The fifth abode of Murugan, atop a hill of 365 steps.',
+    },
+    rating: 4.7,
+    followers: 88000,
+    isOpenNow: true,
+    timings: commonTimings,
+    poojas: poojas('thiruthani'),
+    services: services('thiruthani'),
+    facilities: commonFacilities,
+    heritage: heritage(
+      'வள்ளியை மணந்த பின் முருகன் அமைதி கொண்ட தலம்.',
+      'Where Murugan found peace after wedding Valli.',
+      [['பல்லவர்', 'Pallava']],
+      '365 படிக்கட்டுகள் — ஆண்டின் நாட்களைக் குறிக்கும்.',
+      '365 steps, one for each day of the year.',
+      [['9c', 'ஆரம்ப தலம்', 'Early hilltop shrine']],
+    ),
+  },
+  {
+    id: 't-pazhamudircholai',
+    slug: 'pazhamudircholai-murugan',
+    name: { ta: 'பழமுதிர்சோலை முருகன் கோயில்', en: 'Pazhamudircholai Murugan Temple' },
+    deity: deities[2],
+    districtId: 'dt-madurai',
+    district: { ta: 'மதுரை', en: 'Madurai' },
+    town: { ta: 'அழகர்கோயில்', en: 'Alagar Kovil' },
+    categories: ['murugan', 'arupadai-veedu'],
+    location: { lat: 10.1283, lng: 78.2206 },
+    heroImage: heroes['t-pazhamudircholai'],
+    gallery: galleries['t-pazhamudircholai'],
+    shortDescription: {
+      ta: 'அடர்ந்த சோலைக்குள் அமைந்த முருகனின் ஆறாம் படைவீடு.',
+      en: 'The sixth and final abode, set within a lush hilltop grove.',
+    },
+    rating: 4.6,
+    followers: 54000,
+    isOpenNow: true,
+    timings: commonTimings,
+    poojas: poojas('pazhamudircholai'),
+    services: services('pazhamudircholai'),
+    facilities: commonFacilities,
+    heritage: heritage(
+      'அவ்வையாருக்கு முருகன் ஞானம் அளித்த தலம்.',
+      'Where Murugan tested and blessed the poet Avvaiyar.',
+      [['பாண்டியர்', 'Pandya']],
+      'சோலை சூழ்ந்த குன்றின் மேல் அமைந்த தலம்.',
+      'A shrine crowning a forested hill near the Alagar range.',
+      [['10c', 'சங்க இலக்கியக் குறிப்பு', 'Referenced in Sangam literature']],
+    ),
+  },
+  {
+    id: 't-thiruparankundram',
+    slug: 'thiruparankundram-murugan',
+    name: { ta: 'திருப்பரங்குன்றம் முருகன் கோயில்', en: 'Thiruparankundram Murugan Temple' },
+    deity: deities[2],
+    districtId: 'dt-madurai',
+    district: { ta: 'மதுரை', en: 'Madurai' },
+    town: { ta: 'திருப்பரங்குன்றம்', en: 'Thiruparankundram' },
+    categories: ['murugan', 'arupadai-veedu', 'heritage'],
+    location: { lat: 9.881, lng: 78.073 },
+    heroImage: heroes['t-thiruparankundram'],
+    gallery: galleries['t-thiruparankundram'],
+    shortDescription: {
+      ta: 'முருகன் தெய்வானையை மணந்த முதல் படைவீடு — பாறையில் குடைந்த தலம்.',
+      en: 'The first abode — a rock-cut temple where Murugan wed Devayanai.',
+    },
+    rating: 4.8,
+    followers: 97000,
+    isOpenNow: true,
+    timings: commonTimings,
+    poojas: poojas('thiruparankundram'),
+    services: services('thiruparankundram'),
+    facilities: commonFacilities,
+    heritage: heritage(
+      'சூரபத்மனை வென்ற பின் திருமணம் நடந்த தலம்.',
+      'Where the divine wedding followed the victory over Surapadman.',
+      [['பாண்டியர்', 'Pandya']],
+      'பாறையில் குடைந்த குகைக் கோயில்.',
+      'A cave temple hewn directly into the hillside rock.',
+      [['8c', 'பாண்டியர் குகைத் தலம்', 'Pandya rock-cut shrine']],
+    ),
+  },
 ];
 
 /* -- festivals ------------------------------------------------------------- */
@@ -547,7 +683,7 @@ export const festivals: Festival[] = [
     id: 'fes-chithirai',
     templeId: 't-meenakshi',
     templeName: temples[0].name,
-    image: 'festival-chithirai',
+    image: festivalImages['fes-chithirai'],
     startDate: '2026-04-14',
     endDate: '2026-04-26',
     isLive: true,
@@ -561,7 +697,7 @@ export const festivals: Festival[] = [
     id: 'fes-panguni',
     templeId: 't-palani',
     templeName: temples[4].name,
-    image: 'festival-panguni',
+    image: festivalImages['fes-panguni'],
     startDate: '2026-03-28',
     endDate: '2026-04-04',
     isLive: true,
@@ -575,7 +711,7 @@ export const festivals: Festival[] = [
     id: 'fes-arudra',
     templeId: 't-nataraja',
     templeName: temples[7].name,
-    image: 'festival-arudra',
+    image: festivalImages['fes-arudra'],
     startDate: '2026-12-23',
     endDate: '2026-12-24',
     isLive: false,
@@ -589,7 +725,7 @@ export const festivals: Festival[] = [
     id: 'fes-vaikunta',
     templeId: 't-ranganathaswamy',
     templeName: temples[3].name,
-    image: 'festival-vaikunta',
+    image: festivalImages['fes-vaikunta'],
     startDate: '2026-12-30',
     endDate: '2027-01-08',
     isLive: false,
@@ -606,8 +742,15 @@ export const festivals: Festival[] = [
 export const routes: PilgrimageRoute[] = [
   {
     id: 'r-arupadai',
-    templeIds: ['t-palani', 't-thiruchendur'],
-    image: 'route-arupadai',
+    templeIds: [
+      't-thiruparankundram',
+      't-thiruchendur',
+      't-palani',
+      't-swamimalai',
+      't-thiruthani',
+      't-pazhamudircholai',
+    ],
+    image: routeImages['r-arupadai'],
     stops: 6,
     distanceKm: 640,
     durationDays: 4,
@@ -620,7 +763,7 @@ export const routes: PilgrimageRoute[] = [
   {
     id: 'r-navagraha',
     templeIds: ['t-suryanar'],
-    image: 'route-navagraha',
+    image: routeImages['r-navagraha'],
     stops: 9,
     distanceKm: 120,
     durationDays: 2,
@@ -633,7 +776,7 @@ export const routes: PilgrimageRoute[] = [
   {
     id: 'r-chola',
     templeIds: ['t-brihadeeswarar'],
-    image: 'route-chola',
+    image: routeImages['r-chola'],
     stops: 3,
     distanceKm: 90,
     durationDays: 2,
@@ -651,19 +794,19 @@ export const feed: FeedItem[] = [
   {
     id: 'u1',
     kind: 'festival',
-    source: { type: 'temple', id: 't-meenakshi', name: temples[0].name, avatar: 'meenakshi' },
+    source: { type: 'temple', id: 't-meenakshi', name: temples[0].name, avatar: heroes['t-meenakshi'] },
     title: { ta: 'சித்திரைத் திருவிழா தொடங்கியது', en: 'Chithirai Festival has begun' },
     body: {
       ta: 'இன்று மாலை தேரோட்டம். பக்தர்கள் அதிக எண்ணிக்கையில் எதிர்பார்க்கப்படுகிறார்கள்.',
       en: 'The temple car procession is this evening. Heavy crowds are expected.',
     },
-    media: ['festival-chithirai'],
+    media: feedMedia['u1'],
     publishedAt: '2026-07-24T09:30:00+05:30',
   },
   {
     id: 'u2',
     kind: 'crowd-alert',
-    source: { type: 'temple', id: 't-palani', name: temples[4].name, avatar: 'palani' },
+    source: { type: 'temple', id: 't-palani', name: temples[4].name, avatar: heroes['t-palani'] },
     title: { ta: 'கூட்ட எச்சரிக்கை', en: 'Crowd alert' },
     body: {
       ta: 'குன்று ஏறும் வரிசையில் தற்போது ~2 மணி நேரம் காத்திருப்பு.',
@@ -674,7 +817,7 @@ export const feed: FeedItem[] = [
   {
     id: 'u3',
     kind: 'booking-open',
-    source: { type: 'temple', id: 't-ranganathaswamy', name: temples[3].name, avatar: 'ranganathaswamy' },
+    source: { type: 'temple', id: 't-ranganathaswamy', name: temples[3].name, avatar: heroes['t-ranganathaswamy'] },
     title: { ta: 'வைகுண்ட ஏகாதசி முன்பதிவு', en: 'Vaikunta Ekadasi bookings open' },
     body: {
       ta: 'சொர்க்க வாசல் தரிசன டிக்கெட்டுகள் இப்போது கிடைக்கின்றன.',
@@ -685,19 +828,19 @@ export const feed: FeedItem[] = [
   {
     id: 'u4',
     kind: 'renovation-milestone',
-    source: { type: 'renovation', id: 'rp-nataraja', name: temples[7].name, avatar: 'nataraja' },
+    source: { type: 'renovation', id: 'rp-nataraja', name: temples[7].name, avatar: heroes['t-nataraja'] },
     title: { ta: 'கோபுர பணி 60% நிறைவு', en: 'Gopuram restoration 60% complete' },
     body: {
       ta: 'கிழக்கு கோபுர சுதை வேலைகள் திட்டமிட்டபடி நடைபெறுகின்றன.',
       en: 'Stucco work on the eastern gopuram is progressing on schedule.',
     },
-    media: ['nataraja-1'],
+    media: feedMedia['u4'],
     publishedAt: '2026-07-22T11:20:00+05:30',
   },
   {
     id: 'u5',
     kind: 'heritage-fact',
-    source: { type: 'temple', id: 't-brihadeeswarar', name: temples[1].name, avatar: 'brihadeeswarar' },
+    source: { type: 'temple', id: 't-brihadeeswarar', name: temples[1].name, avatar: heroes['t-brihadeeswarar'] },
     title: { ta: 'உங்களுக்குத் தெரியுமா?', en: 'Did you know?' },
     body: {
       ta: 'தஞ்சை பெரிய கோயிலின் விமானம் ஒரே கல்லால் ஆன 80 டன் கலசத்தால் முடிசூட்டப்பட்டுள்ளது.',
@@ -708,10 +851,10 @@ export const feed: FeedItem[] = [
   {
     id: 'u6',
     kind: 'photo',
-    source: { type: 'temple', id: 't-meenakshi', name: temples[0].name, avatar: 'meenakshi' },
+    source: { type: 'temple', id: 't-meenakshi', name: temples[0].name, avatar: heroes['t-meenakshi'] },
     title: { ta: 'இன்றைய அலங்காரம்', en: "Today's alankaram" },
     body: { ta: 'மீனாட்சி அம்மனின் காலை அலங்காரம்.', en: 'The morning alankaram of Goddess Meenakshi.' },
-    media: ['meenakshi-2', 'meenakshi-3'],
+    media: feedMedia['u6'],
     publishedAt: '2026-07-24T06:45:00+05:30',
   },
   {
@@ -794,7 +937,7 @@ export const renovations: RenovationProject[] = [
     id: 'rp-nataraja',
     templeId: 't-nataraja',
     templeName: temples[7].name,
-    image: 'renovation-nataraja',
+    image: renovationImages['rp-nataraja'],
     budgetInr: 42000000,
     raisedInr: 27300000,
     progressPct: 60,
@@ -819,7 +962,7 @@ export const renovations: RenovationProject[] = [
     id: 'rp-ekambareswarar',
     templeId: 't-ekambareswarar',
     templeName: temples[6].name,
-    image: 'renovation-ekambareswarar',
+    image: renovationImages['rp-ekambareswarar'],
     budgetInr: 18000000,
     raisedInr: 6800000,
     progressPct: 38,
