@@ -2,37 +2,37 @@ import { useLocale } from '@/store/locale';
 import {
   useCategories,
   useFeaturedTemples,
-  useFeed,
   useKpis,
   useLiveFestivals,
-  useNearbyTemples,
   useRoutes,
 } from '@/hooks/queries';
 import { Container } from '@/components/common/Container';
 import { SectionHeader } from '@/components/common/SectionHeader';
 import {
   CategoryChip,
-  FeedCard,
   FestivalCard,
   HomeHero,
-  KpiStat,
   RouteCard,
   TempleCard,
   TempleCardSkeleton,
 } from '@/components/temple';
-
-// Default "near me" anchor (Chennai) until geolocation is wired.
-const HERE = { lat: 13.0827, lng: 80.2707 };
+import {
+  Announcements,
+  AppPromo,
+  ContinueJourney,
+  DivineServices,
+  ExploreByDistrict,
+  TrustBar,
+  UpcomingFestivals,
+} from '@/components/home';
 
 export function HomePage() {
-  const { t } = useLocale();
+  const { t, tx } = useLocale();
 
   const featured = useFeaturedTemples();
   const categories = useCategories();
   const festivals = useLiveFestivals();
-  const nearby = useNearbyTemples(HERE.lat, HERE.lng);
   const routes = useRoutes();
-  const feed = useFeed();
   const kpis = useKpis();
 
   return (
@@ -41,24 +41,37 @@ export function HomePage() {
       <HomeHero templeCount={kpis.data?.[0]?.value} />
 
       <div className="space-y-14 py-14">
-        {/* KPIs */}
+        {/* Continue your journey — bookings, saved temples, passport */}
+        <ContinueJourney />
+
+        {/* Divine services quick access */}
+        <DivineServices />
+
+        {/* Live festivals today */}
         <Container>
-          <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
-            {(kpis.data ?? []).map((k) => (
-              <KpiStat key={k.id} kpi={k} />
+          <SectionHeader
+            title={tx({ ta: 'இன்று நடக்கும் திருவிழாக்கள்', en: 'Live festivals today' })}
+            to="/updates"
+          />
+          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            {festivals.data?.map((f) => (
+              <FestivalCard key={f.id} festival={f} />
             ))}
           </div>
         </Container>
 
-        {/* Featured */}
+        {/* Trending temples */}
         <Container>
-          <SectionHeader title={t('home.featured')} to="/explore" />
+          <SectionHeader title={tx({ ta: 'பிரபல கோயில்கள்', en: 'Trending temples' })} to="/explore" />
           <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
             {featured.isLoading
               ? Array.from({ length: 4 }).map((_, i) => <TempleCardSkeleton key={i} />)
               : featured.data?.map((tpl) => <TempleCard key={tpl.id} temple={tpl} />)}
           </div>
         </Container>
+
+        {/* Explore by district — map + district list + live stats */}
+        <ExploreByDistrict />
 
         {/* Categories */}
         <Container>
@@ -70,27 +83,7 @@ export function HomePage() {
           </div>
         </Container>
 
-        {/* Live festivals */}
-        <Container>
-          <SectionHeader title={t('home.liveFestivals')} to="/updates" />
-          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {festivals.data?.map((f) => (
-              <FestivalCard key={f.id} festival={f} />
-            ))}
-          </div>
-        </Container>
-
-        {/* Nearby */}
-        <Container>
-          <SectionHeader title={t('home.nearby')} to="/explore" />
-          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
-            {nearby.isLoading
-              ? Array.from({ length: 4 }).map((_, i) => <TempleCardSkeleton key={i} />)
-              : nearby.data?.slice(0, 4).map((tpl) => <TempleCard key={tpl.id} temple={tpl} />)}
-          </div>
-        </Container>
-
-        {/* Routes */}
+        {/* Pilgrimage routes */}
         <Container>
           <SectionHeader title={t('home.routes')} to="/explore" />
           <div className="grid grid-cols-1 gap-5 lg:grid-cols-3">
@@ -100,15 +93,19 @@ export function HomePage() {
           </div>
         </Container>
 
-        {/* Updates */}
-        <Container feed>
-          <SectionHeader title={t('home.updates')} to="/updates" />
-          <div className="space-y-5">
-            {feed.data?.slice(0, 3).map((item) => (
-              <FeedCard key={item.id} item={item} />
-            ))}
+        {/* Upcoming festivals + announcements */}
+        <Container>
+          <div className="grid gap-8 lg:grid-cols-2">
+            <UpcomingFestivals />
+            <Announcements />
           </div>
         </Container>
+
+        {/* App download promo */}
+        <AppPromo />
+
+        {/* Trust / assurance strip */}
+        <TrustBar />
       </div>
     </div>
   );
