@@ -1,0 +1,882 @@
+/**
+ * In-memory mock dataset for TempleOS.
+ *
+ * Temple hero images are real photos from Wikimedia Commons (CC-licensed).
+ * Secondary/gallery image fields hold *seed strings* — <SmartImage> turns any
+ * non-URL seed into a deterministic gradient, and renders real URLs as a
+ * lazy-loaded <img> (falling back to a gradient if a URL ever fails to load).
+ * When Catalyst is wired, point these at Stratus URLs — no component changes.
+ */
+import type {
+  Booking,
+  Deity,
+  District,
+  Donation,
+  Festival,
+  FeedItem,
+  Kpi,
+  PilgrimageRoute,
+  RenovationProject,
+  Temple,
+  TempleCategory,
+  User,
+} from '@/types';
+
+/* -- reference data -------------------------------------------------------- */
+
+export const deities: Deity[] = [
+  { id: 'd-shiva', tradition: 'shiva', name: { ta: 'சிவன்', en: 'Shiva' } },
+  { id: 'd-vishnu', tradition: 'vishnu', name: { ta: 'விஷ்ணு', en: 'Vishnu' } },
+  { id: 'd-murugan', tradition: 'murugan', name: { ta: 'முருகன்', en: 'Murugan' } },
+  { id: 'd-amman', tradition: 'amman', name: { ta: 'அம்மன்', en: 'Amman' } },
+  { id: 'd-vinayagar', tradition: 'vinayagar', name: { ta: 'விநாயகர்', en: 'Vinayagar' } },
+];
+
+export const districts: District[] = [
+  { id: 'dt-madurai', templeCount: 312, name: { ta: 'மதுரை', en: 'Madurai' } },
+  { id: 'dt-thanjavur', templeCount: 288, name: { ta: 'தஞ்சாவூர்', en: 'Thanjavur' } },
+  { id: 'dt-ramanathapuram', templeCount: 141, name: { ta: 'ராமநாதபுரம்', en: 'Ramanathapuram' } },
+  { id: 'dt-trichy', templeCount: 264, name: { ta: 'திருச்சிராப்பள்ளி', en: 'Tiruchirappalli' } },
+  { id: 'dt-dindigul', templeCount: 176, name: { ta: 'திண்டுக்கல்', en: 'Dindigul' } },
+  { id: 'dt-chennai', templeCount: 203, name: { ta: 'சென்னை', en: 'Chennai' } },
+  { id: 'dt-kanchipuram', templeCount: 197, name: { ta: 'காஞ்சிபுரம்', en: 'Kanchipuram' } },
+  { id: 'dt-cuddalore', templeCount: 158, name: { ta: 'கடலூர்', en: 'Cuddalore' } },
+  { id: 'dt-tirunelveli', templeCount: 231, name: { ta: 'திருநெல்வேலி', en: 'Tirunelveli' } },
+];
+
+export const categories: TempleCategory[] = [
+  {
+    id: 'c-navagraha',
+    key: 'navagraha',
+    icon: 'Orbit',
+    templeCount: 9,
+    name: { ta: 'நவகிரக தலங்கள்', en: 'Navagraha Temples' },
+    description: { ta: 'ஒன்பது கிரகங்களின் தலங்கள்', en: 'The nine planetary temples' },
+  },
+  {
+    id: 'c-arupadai',
+    key: 'arupadai-veedu',
+    icon: 'Mountain',
+    templeCount: 6,
+    name: { ta: 'அறுபடை வீடு', en: 'Arupadai Veedu' },
+    description: { ta: 'முருகனின் ஆறு படைவீடுகள்', en: "Murugan's six sacred abodes" },
+  },
+  {
+    id: 'c-divya-desam',
+    key: 'divya-desam',
+    icon: 'Sparkles',
+    templeCount: 108,
+    name: { ta: 'திவ்ய தேசம்', en: 'Divya Desam' },
+    description: { ta: '108 விஷ்ணு தலங்கள்', en: '108 sacred Vishnu shrines' },
+  },
+  {
+    id: 'c-padal-petra',
+    key: 'padal-petra-sthalam',
+    icon: 'ScrollText',
+    templeCount: 275,
+    name: { ta: 'பாடல் பெற்ற தலம்', en: 'Padal Petra Sthalam' },
+    description: { ta: 'தேவாரம் பாடிய சிவத் தலங்கள்', en: 'Shiva temples hymned in the Thevaram' },
+  },
+  {
+    id: 'c-shiva',
+    key: 'shiva',
+    icon: 'Flame',
+    templeCount: 4820,
+    name: { ta: 'சிவன் கோயில்கள்', en: 'Shiva Temples' },
+    description: { ta: 'சிவபெருமான் தலங்கள்', en: 'Temples of Lord Shiva' },
+  },
+  {
+    id: 'c-murugan',
+    key: 'murugan',
+    icon: 'Sun',
+    templeCount: 1240,
+    name: { ta: 'முருகன் கோயில்கள்', en: 'Murugan Temples' },
+    description: { ta: 'முருகப்பெருமான் தலங்கள்', en: 'Temples of Lord Murugan' },
+  },
+];
+
+/* -- helper to build heritage blocks quickly ------------------------------- */
+function heritage(
+  history: string,
+  historyEn: string,
+  dynasties: [string, string][],
+  arch: string,
+  archEn: string,
+  timeline: [string, string, string][],
+) {
+  return {
+    history: { ta: history, en: historyEn },
+    architecture: { ta: arch, en: archEn },
+    dynasties: dynasties.map(([ta, en]) => ({ ta, en })),
+    timeline: timeline.map(([year, ta, en]) => ({ year, event: { ta, en } })),
+    hasAudioGuide: true,
+    has360Tour: true,
+    hasDroneGallery: true,
+  };
+}
+
+const commonFacilities = [
+  { id: 'f-parking', icon: 'Car', available: true, name: { ta: 'வாகன நிறுத்தம்', en: 'Parking' } },
+  { id: 'f-wheelchair', icon: 'Accessibility', available: true, name: { ta: 'சக்கர நாற்காலி', en: 'Wheelchair access' } },
+  { id: 'f-annadhanam', icon: 'Utensils', available: true, name: { ta: 'அன்னதானம்', en: 'Annadhanam' } },
+  { id: 'f-restroom', icon: 'Bath', available: true, name: { ta: 'கழிப்பறை', en: 'Restrooms' } },
+  { id: 'f-cloakroom', icon: 'Backpack', available: true, name: { ta: 'பொருள் அறை', en: 'Cloak room' } },
+  { id: 'f-drinking', icon: 'Droplets', available: true, name: { ta: 'குடிநீர்', en: 'Drinking water' } },
+];
+
+const commonTimings = [
+  { label: { ta: 'காலை', en: 'Morning' }, open: '05:00', close: '12:30' },
+  { label: { ta: 'மாலை', en: 'Evening' }, open: '16:00', close: '21:00' },
+];
+
+function poojas(prefix: string) {
+  return [
+    {
+      id: `${prefix}-p1`,
+      bookable: true,
+      time: '06:00',
+      priceInr: 100,
+      name: { ta: 'விஸ்வரூப தரிசனம்', en: 'Viswaroopa Darshan' },
+      description: { ta: 'அதிகாலை முதல் பூஜை', en: 'The first pooja at dawn' },
+    },
+    {
+      id: `${prefix}-p2`,
+      bookable: true,
+      time: '12:00',
+      priceInr: 250,
+      name: { ta: 'உச்சிகால பூஜை', en: 'Uchikala Pooja' },
+      description: { ta: 'நண்பகல் அபிஷேகம்', en: 'Midday abhishekam' },
+    },
+    {
+      id: `${prefix}-p3`,
+      bookable: true,
+      time: '19:30',
+      priceInr: 500,
+      name: { ta: 'அர்த்தஜாம பூஜை', en: 'Arthajama Pooja' },
+      description: { ta: 'இரவு இறுதி பூஜை', en: 'The final pooja of the night' },
+    },
+  ];
+}
+
+function services(prefix: string) {
+  return [
+    {
+      id: `${prefix}-s1`,
+      category: 'archana' as const,
+      priceInr: 50,
+      bookable: true,
+      name: { ta: 'அர்ச்சனை', en: 'Archana' },
+      description: { ta: 'நட்சத்திர அர்ச்சனை', en: 'Star-based archana in your name' },
+    },
+    {
+      id: `${prefix}-s2`,
+      category: 'abhishekam' as const,
+      priceInr: 1500,
+      bookable: true,
+      name: { ta: 'அபிஷேகம்', en: 'Special Abhishekam' },
+      description: { ta: 'சிறப்பு அபிஷேகம்', en: 'Sponsor a special abhishekam' },
+    },
+    {
+      id: `${prefix}-s3`,
+      category: 'annadhanam' as const,
+      priceInr: 1000,
+      bookable: true,
+      name: { ta: 'அன்னதான சேவை', en: 'Annadhanam Seva' },
+      description: { ta: 'உணவு வழங்கும் சேவை', en: 'Sponsor a meal for devotees' },
+    },
+    {
+      id: `${prefix}-s4`,
+      category: 'darshan' as const,
+      priceInr: 200,
+      bookable: true,
+      name: { ta: 'சிறப்பு தரிசனம்', en: 'Quick Darshan' },
+      description: { ta: 'வரிசை தவிர்க்கும் தரிசனம்', en: 'Skip-the-queue darshan pass' },
+    },
+  ];
+}
+
+/* -- temples --------------------------------------------------------------- */
+
+export const temples: Temple[] = [
+  {
+    id: 't-meenakshi',
+    slug: 'meenakshi-amman-madurai',
+    name: { ta: 'மீனாட்சி அம்மன் கோயில்', en: 'Meenakshi Amman Temple' },
+    deity: deities[3],
+    districtId: 'dt-madurai',
+    district: { ta: 'மதுரை', en: 'Madurai' },
+    town: { ta: 'மதுரை', en: 'Madurai' },
+    categories: ['amman', 'padal-petra-sthalam', 'heritage'],
+    location: { lat: 9.9195, lng: 78.1193 },
+    heroImage:
+      'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e9/An_aerial_view_of_Madurai_city_from_atop_of_Meenakshi_Amman_temple.jpg/1280px-An_aerial_view_of_Madurai_city_from_atop_of_Meenakshi_Amman_temple.jpg',
+    gallery: ['meenakshi-1', 'meenakshi-2', 'meenakshi-3', 'meenakshi-4'],
+    shortDescription: {
+      ta: 'ஆயிரம் கால் மண்டபமும் வண்ணமயமான கோபுரங்களும் கொண்ட மதுரையின் இதயம்.',
+      en: 'The beating heart of Madurai, famed for its 14 towering gopurams.',
+    },
+    rating: 4.9,
+    followers: 184000,
+    isOpenNow: true,
+    timings: commonTimings,
+    poojas: poojas('meenakshi'),
+    services: services('meenakshi'),
+    facilities: commonFacilities,
+    featured: true,
+    heritage: heritage(
+      'மதுரை மீனாட்சி அம்மன் கோயில் தமிழ் நாகரிகத்தின் அடையாளம்.',
+      'The Meenakshi temple is a defining symbol of Tamil civilisation.',
+      [['பாண்டியர்', 'Pandya'], ['நாயக்கர்', 'Nayak']],
+      '14 கோபுரங்கள், ஆயிரம் கால் மண்டபம், தாமரைக் குளம்.',
+      '14 gopurams, a thousand-pillar hall, and the golden lotus tank.',
+      [
+        ['6c', 'ஆரம்ப கட்டுமானம்', 'Earliest shrine established'],
+        ['1623', 'திருமலை நாயக்கர் விரிவாக்கம்', 'Expanded under Thirumalai Nayak'],
+        ['2010', 'கோபுர மறுசீரமைப்பு', 'Major gopuram restoration'],
+      ],
+    ),
+  },
+  {
+    id: 't-brihadeeswarar',
+    slug: 'brihadeeswarar-thanjavur',
+    name: { ta: 'பிரகதீஸ்வரர் கோயில்', en: 'Brihadeeswarar Temple' },
+    deity: deities[0],
+    districtId: 'dt-thanjavur',
+    district: { ta: 'தஞ்சாவூர்', en: 'Thanjavur' },
+    town: { ta: 'தஞ்சாவூர்', en: 'Thanjavur' },
+    categories: ['shiva', 'padal-petra-sthalam', 'heritage'],
+    location: { lat: 10.782, lng: 79.1315 },
+    heroImage:
+      'https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Brihadisvara_Temple_during_Maha_Shivaratri-WUS03611_%28edit%29.jpg/1280px-Brihadisvara_Temple_during_Maha_Shivaratri-WUS03611_%28edit%29.jpg',
+    gallery: ['brihadeeswarar-1', 'brihadeeswarar-2', 'brihadeeswarar-3'],
+    shortDescription: {
+      ta: 'ஆயிரம் ஆண்டுகள் பழமையான சோழர் கட்டிடக்கலையின் உச்சம் — யுனெஸ்கோ பாரம்பரிய தலம்.',
+      en: 'The thousand-year Chola masterpiece — a UNESCO World Heritage Site.',
+    },
+    rating: 4.9,
+    followers: 156000,
+    isOpenNow: true,
+    timings: commonTimings,
+    poojas: poojas('brihadeeswarar'),
+    services: services('brihadeeswarar'),
+    facilities: commonFacilities,
+    featured: true,
+    heritage: heritage(
+      'ராஜராஜ சோழனால் கட்டப்பட்ட பெரிய கோயில்.',
+      'The great temple built by Rajaraja Chola I.',
+      [['சோழர்', 'Chola']],
+      '216 அடி விமானம், ஒற்றைக் கல் நந்தி.',
+      'A 216-foot vimana crowned by a single-granite capstone.',
+      [
+        ['1010', 'கோயில் நிறைவு', 'Temple consecrated'],
+        ['1987', 'யுனெஸ்கோ அங்கீகாரம்', 'Declared a UNESCO site'],
+      ],
+    ),
+  },
+  {
+    id: 't-ramanathaswamy',
+    slug: 'ramanathaswamy-rameswaram',
+    name: { ta: 'ராமநாதசுவாமி கோயில்', en: 'Ramanathaswamy Temple' },
+    deity: deities[0],
+    districtId: 'dt-ramanathapuram',
+    district: { ta: 'ராமநாதபுரம்', en: 'Ramanathapuram' },
+    town: { ta: 'ராமேஸ்வரம்', en: 'Rameswaram' },
+    categories: ['shiva', 'padal-petra-sthalam', 'heritage'],
+    location: { lat: 9.2881, lng: 79.3174 },
+    heroImage:
+      'https://upload.wikimedia.org/wikipedia/commons/thumb/8/84/Ramanathaswamy_temple7.JPG/1280px-Ramanathaswamy_temple7.JPG',
+    gallery: ['ramanathaswamy-1', 'ramanathaswamy-2'],
+    shortDescription: {
+      ta: 'உலகின் மிக நீளமான கோயில் தாழ்வாரங்களைக் கொண்ட புனித தீவுத் தலம்.',
+      en: 'The sacred island temple with the longest corridors in the world.',
+    },
+    rating: 4.8,
+    followers: 132000,
+    isOpenNow: false,
+    timings: commonTimings,
+    poojas: poojas('ramanathaswamy'),
+    services: services('ramanathaswamy'),
+    facilities: commonFacilities,
+    featured: true,
+    heritage: heritage(
+      'ராமர் வழிபட்ட ஜோதிர்லிங்கத் தலம்.',
+      'One of the twelve Jyotirlinga shrines, worshipped by Lord Rama.',
+      [['சேதுபதி', 'Sethupathi']],
+      '1200 தூண்கள் கொண்ட மூன்றாவது தாழ்வாரம்.',
+      'The third corridor runs 1,200 pillars long.',
+      [['12c', 'ஆரம்ப கட்டுமானம்', 'Construction begins']],
+    ),
+  },
+  {
+    id: 't-ranganathaswamy',
+    slug: 'ranganathaswamy-srirangam',
+    name: { ta: 'ரங்கநாதசுவாமி கோயில்', en: 'Ranganathaswamy Temple' },
+    deity: deities[1],
+    districtId: 'dt-trichy',
+    district: { ta: 'திருச்சிராப்பள்ளி', en: 'Tiruchirappalli' },
+    town: { ta: 'ஸ்ரீரங்கம்', en: 'Srirangam' },
+    categories: ['vishnu', 'divya-desam', 'heritage'],
+    location: { lat: 10.8624, lng: 78.6897 },
+    heroImage:
+      'https://upload.wikimedia.org/wikipedia/commons/thumb/9/99/Ranganathaswamy_temple_tiruchirappalli.jpg/1280px-Ranganathaswamy_temple_tiruchirappalli.jpg',
+    gallery: ['ranganathaswamy-1', 'ranganathaswamy-2', 'ranganathaswamy-3'],
+    shortDescription: {
+      ta: '156 ஏக்கரில் பரந்த உலகின் மிகப்பெரிய செயல்படும் இந்துக் கோயில்.',
+      en: 'The largest functioning Hindu temple complex in the world, across 156 acres.',
+    },
+    rating: 4.9,
+    followers: 148000,
+    isOpenNow: true,
+    timings: commonTimings,
+    poojas: poojas('ranganathaswamy'),
+    services: services('ranganathaswamy'),
+    facilities: commonFacilities,
+    featured: true,
+    heritage: heritage(
+      'திவ்ய தேசங்களில் முதன்மையான தலம்.',
+      'The foremost of the 108 Divya Desam shrines.',
+      [['சோழர்', 'Chola'], ['விஜயநகர்', 'Vijayanagar']],
+      '21 கோபுரங்கள், 7 மதில் சுவர்கள்.',
+      '21 gopurams enclosed by seven concentric walls.',
+      [['10c', 'விரிவாக்கம்', 'Major expansion under the Cholas']],
+    ),
+  },
+  {
+    id: 't-palani',
+    slug: 'palani-murugan',
+    name: { ta: 'பழனி முருகன் கோயில்', en: 'Palani Murugan Temple' },
+    deity: deities[2],
+    districtId: 'dt-dindigul',
+    district: { ta: 'திண்டுக்கல்', en: 'Dindigul' },
+    town: { ta: 'பழனி', en: 'Palani' },
+    categories: ['murugan', 'arupadai-veedu'],
+    location: { lat: 10.4495, lng: 77.5209 },
+    heroImage:
+      'https://upload.wikimedia.org/wikipedia/commons/thumb/7/76/Palanihills.JPG/1280px-Palanihills.JPG',
+    gallery: ['palani-1', 'palani-2'],
+    shortDescription: {
+      ta: 'குன்றின் மேல் அமைந்த முருகனின் மூன்றாம் படைவீடு.',
+      en: "The third of Murugan's six abodes, atop the Palani hills.",
+    },
+    rating: 4.8,
+    followers: 121000,
+    isOpenNow: true,
+    timings: commonTimings,
+    poojas: poojas('palani'),
+    services: services('palani'),
+    facilities: commonFacilities,
+    heritage: heritage(
+      'நவபாஷாணத்தால் ஆன மூர்த்தி கொண்ட தலம்.',
+      'Home to the idol made of the legendary nine-poison amalgam.',
+      [['சேரர்', 'Chera']],
+      'குன்று உச்சிக்கு ரயில் வழி.',
+      'A winter line and rope-car carry pilgrims to the summit.',
+      [['9c', 'குறிப்புகள்', 'First literary references']],
+    ),
+  },
+  {
+    id: 't-kapaleeshwarar',
+    slug: 'kapaleeshwarar-mylapore',
+    name: { ta: 'கபாலீஸ்வரர் கோயில்', en: 'Kapaleeshwarar Temple' },
+    deity: deities[0],
+    districtId: 'dt-chennai',
+    district: { ta: 'சென்னை', en: 'Chennai' },
+    town: { ta: 'மயிலாப்பூர்', en: 'Mylapore' },
+    categories: ['shiva', 'padal-petra-sthalam'],
+    location: { lat: 13.0337, lng: 80.2698 },
+    heroImage: 'https://upload.wikimedia.org/wikipedia/commons/9/99/Kapaleeswarar1.jpg',
+    gallery: ['kapaleeshwarar-1', 'kapaleeshwarar-2'],
+    shortDescription: {
+      ta: 'சென்னையின் இதயத்தில் அமைந்த திராவிடக் கட்டிடக்கலைத் தலம்.',
+      en: 'A landmark of Dravidian architecture in the heart of Chennai.',
+    },
+    rating: 4.7,
+    followers: 98000,
+    isOpenNow: true,
+    timings: commonTimings,
+    poojas: poojas('kapaleeshwarar'),
+    services: services('kapaleeshwarar'),
+    facilities: commonFacilities,
+    heritage: heritage(
+      'மயிலாப்பூரின் ஆயிரம் ஆண்டுத் தலம்.',
+      'A thousand years at the centre of old Mylapore.',
+      [['பல்லவர்', 'Pallava'], ['விஜயநகர்', 'Vijayanagar']],
+      '37 மீட்டர் கிழக்கு கோபுரம்.',
+      'A 37-metre eastern gopuram of vivid stucco figures.',
+      [['7c', 'ஆரம்பம்', 'Original Pallava shrine']],
+    ),
+  },
+  {
+    id: 't-ekambareswarar',
+    slug: 'ekambareswarar-kanchipuram',
+    name: { ta: 'ஏகாம்பரேஸ்வரர் கோயில்', en: 'Ekambareswarar Temple' },
+    deity: deities[0],
+    districtId: 'dt-kanchipuram',
+    district: { ta: 'காஞ்சிபுரம்', en: 'Kanchipuram' },
+    town: { ta: 'காஞ்சிபுரம்', en: 'Kanchipuram' },
+    categories: ['shiva', 'padal-petra-sthalam', 'heritage'],
+    location: { lat: 12.847, lng: 79.6996 },
+    heroImage:
+      'https://upload.wikimedia.org/wikipedia/commons/thumb/0/06/Ekambareswarar5.jpg/1280px-Ekambareswarar5.jpg',
+    gallery: ['ekambareswarar-1', 'ekambareswarar-2'],
+    shortDescription: {
+      ta: 'நிலம் என்ற பஞ்சபூத தலம் — 3500 ஆண்டு மாமரத்துடன்.',
+      en: 'The Earth element among the five Pancha Bhoota temples, with its 3,500-year mango tree.',
+    },
+    rating: 4.7,
+    followers: 87000,
+    isOpenNow: false,
+    timings: commonTimings,
+    poojas: poojas('ekambareswarar'),
+    services: services('ekambareswarar'),
+    facilities: commonFacilities,
+    heritage: heritage(
+      'பஞ்சபூத தலங்களில் நிலத் தலம்.',
+      'The Earth element among the five sacred element temples.',
+      [['பல்லவர்', 'Pallava'], ['சோழர்', 'Chola']],
+      '59 மீட்டர் ராஜகோபுரம்.',
+      'A 59-metre raja gopuram, among the tallest in South India.',
+      [['6c', 'பல்லவர் தலம்', 'Pallava-era shrine']],
+    ),
+  },
+  {
+    id: 't-nataraja',
+    slug: 'nataraja-chidambaram',
+    name: { ta: 'நடராஜர் கோயில்', en: 'Nataraja Temple' },
+    deity: deities[0],
+    districtId: 'dt-cuddalore',
+    district: { ta: 'கடலூர்', en: 'Cuddalore' },
+    town: { ta: 'சிதம்பரம்', en: 'Chidambaram' },
+    categories: ['shiva', 'padal-petra-sthalam', 'heritage'],
+    location: { lat: 11.3995, lng: 79.6936 },
+    heroImage:
+      'https://upload.wikimedia.org/wikipedia/commons/4/44/Le_temple_de_Shiva_Nataraja_%28Chidambaram%2C_Inde%29_%2814037020332%29.jpg',
+    gallery: ['nataraja-1', 'nataraja-2'],
+    shortDescription: {
+      ta: 'ஆகாயம் என்ற பஞ்சபூத தலம் — ஆனந்த தாண்டவத்தின் இருப்பிடம்.',
+      en: 'The Space element temple — home of Shiva as the cosmic dancer.',
+    },
+    rating: 4.8,
+    followers: 104000,
+    isOpenNow: true,
+    timings: commonTimings,
+    poojas: poojas('nataraja'),
+    services: services('nataraja'),
+    facilities: commonFacilities,
+    heritage: heritage(
+      'சிதம்பர ரகசியம் கொண்ட தலம்.',
+      'Keeper of the celebrated "Chidambara Rahasya".',
+      [['சோழர்', 'Chola']],
+      'பொன் வேய்ந்த சிற்றம்பலம்.',
+      'The gold-roofed inner sanctum, the Chit Sabha.',
+      [['10c', 'சோழர் விரிவாக்கம்', 'Chola expansion']],
+    ),
+  },
+  {
+    id: 't-thiruchendur',
+    slug: 'thiruchendur-murugan',
+    name: { ta: 'திருச்செந்தூர் முருகன் கோயில்', en: 'Thiruchendur Murugan Temple' },
+    deity: deities[2],
+    districtId: 'dt-tirunelveli',
+    district: { ta: 'தூத்துக்குடி', en: 'Thoothukudi' },
+    town: { ta: 'திருச்செந்தூர்', en: 'Thiruchendur' },
+    categories: ['murugan', 'arupadai-veedu'],
+    location: { lat: 8.4959, lng: 78.1206 },
+    heroImage:
+      'https://upload.wikimedia.org/wikipedia/commons/thumb/e/eb/Thiruchendur11.jpg/1280px-Thiruchendur11.jpg',
+    gallery: ['thiruchendur-1', 'thiruchendur-2'],
+    shortDescription: {
+      ta: 'கடற்கரையில் அமைந்த முருகனின் இரண்டாம் படைவீடு.',
+      en: "The second of Murugan's abodes, on the shore of the Bay of Bengal.",
+    },
+    rating: 4.8,
+    followers: 93000,
+    isOpenNow: true,
+    timings: commonTimings,
+    poojas: poojas('thiruchendur'),
+    services: services('thiruchendur'),
+    facilities: commonFacilities,
+    heritage: heritage(
+      'சூரசம்ஹாரம் நிகழும் கடலோரத் தலம்.',
+      'The seaside abode where the Soorasamharam is enacted.',
+      [['பாண்டியர்', 'Pandya']],
+      'கடலை நோக்கிய கோபுரம்.',
+      'A gopuram facing the open sea.',
+      [['9c', 'இலக்கியக் குறிப்புகள்', 'Sangam-era references']],
+    ),
+  },
+  {
+    id: 't-suryanar',
+    slug: 'suryanar-kovil',
+    name: { ta: 'சூரியனார் கோயில்', en: 'Suryanar Temple' },
+    deity: deities[0],
+    districtId: 'dt-thanjavur',
+    district: { ta: 'தஞ்சாவூர்', en: 'Thanjavur' },
+    town: { ta: 'ஆடுதுறை', en: 'Aduthurai' },
+    categories: ['navagraha', 'heritage'],
+    location: { lat: 11.0179, lng: 79.4451 },
+    heroImage:
+      'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8d/Suryanar_Koil_in_Tamil_Nadu_JEG6875.jpg/1280px-Suryanar_Koil_in_Tamil_Nadu_JEG6875.jpg',
+    gallery: ['suryanar-1'],
+    shortDescription: {
+      ta: 'சூரிய பகவானுக்கு அர்ப்பணிக்கப்பட்ட நவகிரக தலம்.',
+      en: 'The Navagraha temple dedicated to the Sun god.',
+    },
+    rating: 4.6,
+    followers: 41000,
+    isOpenNow: true,
+    timings: commonTimings,
+    poojas: poojas('suryanar'),
+    services: services('suryanar'),
+    facilities: commonFacilities,
+    heritage: heritage(
+      'நவகிரக தலங்களில் சூரிய தலம்.',
+      'The Sun shrine among the nine Navagraha temples.',
+      [['சோழர்', 'Chola']],
+      'கிரகங்களுக்கு தனித் தனி சன்னதி.',
+      'Separate shrines for each of the nine planets.',
+      [['11c', 'குலோத்துங்க சோழன்', 'Built under Kulottunga Chola']],
+    ),
+  },
+];
+
+/* -- festivals ------------------------------------------------------------- */
+
+export const festivals: Festival[] = [
+  {
+    id: 'fes-chithirai',
+    templeId: 't-meenakshi',
+    templeName: temples[0].name,
+    image: 'festival-chithirai',
+    startDate: '2026-04-14',
+    endDate: '2026-04-26',
+    isLive: true,
+    name: { ta: 'சித்திரைத் திருவிழா', en: 'Chithirai Festival' },
+    description: {
+      ta: 'மீனாட்சி திருக்கல்யாணம் — மதுரையின் மிகப்பெரிய திருவிழா.',
+      en: "Meenakshi's celestial wedding — Madurai's grandest festival.",
+    },
+  },
+  {
+    id: 'fes-panguni',
+    templeId: 't-palani',
+    templeName: temples[4].name,
+    image: 'festival-panguni',
+    startDate: '2026-03-28',
+    endDate: '2026-04-04',
+    isLive: true,
+    name: { ta: 'பங்குனி உத்திரம்', en: 'Panguni Uthiram' },
+    description: {
+      ta: 'பழனியில் பாதயாத்திரையுடன் கூடிய பெருவிழா.',
+      en: 'The great padayatra festival at Palani.',
+    },
+  },
+  {
+    id: 'fes-arudra',
+    templeId: 't-nataraja',
+    templeName: temples[7].name,
+    image: 'festival-arudra',
+    startDate: '2026-12-23',
+    endDate: '2026-12-24',
+    isLive: false,
+    name: { ta: 'ஆருத்ரா தரிசனம்', en: 'Arudra Darshanam' },
+    description: {
+      ta: 'நடராஜரின் ஆனந்த தாண்டவ தரிசனம்.',
+      en: "Darshan of Nataraja's cosmic dance.",
+    },
+  },
+  {
+    id: 'fes-vaikunta',
+    templeId: 't-ranganathaswamy',
+    templeName: temples[3].name,
+    image: 'festival-vaikunta',
+    startDate: '2026-12-30',
+    endDate: '2027-01-08',
+    isLive: false,
+    name: { ta: 'வைகுண்ட ஏகாதசி', en: 'Vaikunta Ekadasi' },
+    description: {
+      ta: 'சொர்க்க வாசல் திறக்கும் புனித நாள்.',
+      en: 'The opening of the Gateway to Heaven at Srirangam.',
+    },
+  },
+];
+
+/* -- pilgrimage routes ----------------------------------------------------- */
+
+export const routes: PilgrimageRoute[] = [
+  {
+    id: 'r-arupadai',
+    templeIds: ['t-palani', 't-thiruchendur'],
+    image: 'route-arupadai',
+    stops: 6,
+    distanceKm: 640,
+    durationDays: 4,
+    name: { ta: 'அறுபடை வீடு யாத்திரை', en: 'Arupadai Veedu Pilgrimage' },
+    description: {
+      ta: 'முருகனின் ஆறு படைவீடுகளையும் தரிசிக்கும் யாத்திரை.',
+      en: "A journey to all six sacred abodes of Lord Murugan.",
+    },
+  },
+  {
+    id: 'r-navagraha',
+    templeIds: ['t-suryanar'],
+    image: 'route-navagraha',
+    stops: 9,
+    distanceKm: 120,
+    durationDays: 2,
+    name: { ta: 'நவகிரக யாத்திரை', en: 'Navagraha Circuit' },
+    description: {
+      ta: 'கும்பகோணம் அருகே ஒன்பது கிரக தலங்கள்.',
+      en: 'The nine planetary temples clustered near Kumbakonam.',
+    },
+  },
+  {
+    id: 'r-chola',
+    templeIds: ['t-brihadeeswarar'],
+    image: 'route-chola',
+    stops: 3,
+    distanceKm: 90,
+    durationDays: 2,
+    name: { ta: 'சோழர் பெருங்கோயில்கள்', en: 'Great Living Chola Temples' },
+    description: {
+      ta: 'யுனெஸ்கோ அங்கீகரித்த மூன்று சோழர் தலங்கள்.',
+      en: 'The three UNESCO-listed imperial Chola temples.',
+    },
+  },
+];
+
+/* -- updates feed ---------------------------------------------------------- */
+
+export const feed: FeedItem[] = [
+  {
+    id: 'u1',
+    kind: 'festival',
+    source: { type: 'temple', id: 't-meenakshi', name: temples[0].name, avatar: 'meenakshi' },
+    title: { ta: 'சித்திரைத் திருவிழா தொடங்கியது', en: 'Chithirai Festival has begun' },
+    body: {
+      ta: 'இன்று மாலை தேரோட்டம். பக்தர்கள் அதிக எண்ணிக்கையில் எதிர்பார்க்கப்படுகிறார்கள்.',
+      en: 'The temple car procession is this evening. Heavy crowds are expected.',
+    },
+    media: ['festival-chithirai'],
+    publishedAt: '2026-07-24T09:30:00+05:30',
+  },
+  {
+    id: 'u2',
+    kind: 'crowd-alert',
+    source: { type: 'temple', id: 't-palani', name: temples[4].name, avatar: 'palani' },
+    title: { ta: 'கூட்ட எச்சரிக்கை', en: 'Crowd alert' },
+    body: {
+      ta: 'குன்று ஏறும் வரிசையில் தற்போது ~2 மணி நேரம் காத்திருப்பு.',
+      en: 'Current wait time on the hill queue is about 2 hours.',
+    },
+    publishedAt: '2026-07-24T08:10:00+05:30',
+  },
+  {
+    id: 'u3',
+    kind: 'booking-open',
+    source: { type: 'temple', id: 't-ranganathaswamy', name: temples[3].name, avatar: 'ranganathaswamy' },
+    title: { ta: 'வைகுண்ட ஏகாதசி முன்பதிவு', en: 'Vaikunta Ekadasi bookings open' },
+    body: {
+      ta: 'சொர்க்க வாசல் தரிசன டிக்கெட்டுகள் இப்போது கிடைக்கின்றன.',
+      en: 'Gateway-to-Heaven darshan passes are now available to book.',
+    },
+    publishedAt: '2026-07-23T18:00:00+05:30',
+  },
+  {
+    id: 'u4',
+    kind: 'renovation-milestone',
+    source: { type: 'renovation', id: 'rp-nataraja', name: temples[7].name, avatar: 'nataraja' },
+    title: { ta: 'கோபுர பணி 60% நிறைவு', en: 'Gopuram restoration 60% complete' },
+    body: {
+      ta: 'கிழக்கு கோபுர சுதை வேலைகள் திட்டமிட்டபடி நடைபெறுகின்றன.',
+      en: 'Stucco work on the eastern gopuram is progressing on schedule.',
+    },
+    media: ['nataraja-1'],
+    publishedAt: '2026-07-22T11:20:00+05:30',
+  },
+  {
+    id: 'u5',
+    kind: 'heritage-fact',
+    source: { type: 'temple', id: 't-brihadeeswarar', name: temples[1].name, avatar: 'brihadeeswarar' },
+    title: { ta: 'உங்களுக்குத் தெரியுமா?', en: 'Did you know?' },
+    body: {
+      ta: 'தஞ்சை பெரிய கோயிலின் விமானம் ஒரே கல்லால் ஆன 80 டன் கலசத்தால் முடிசூட்டப்பட்டுள்ளது.',
+      en: 'The Thanjavur vimana is crowned by an 80-tonne single-granite capstone.',
+    },
+    publishedAt: '2026-07-21T07:00:00+05:30',
+  },
+  {
+    id: 'u6',
+    kind: 'photo',
+    source: { type: 'temple', id: 't-meenakshi', name: temples[0].name, avatar: 'meenakshi' },
+    title: { ta: 'இன்றைய அலங்காரம்', en: "Today's alankaram" },
+    body: { ta: 'மீனாட்சி அம்மனின் காலை அலங்காரம்.', en: 'The morning alankaram of Goddess Meenakshi.' },
+    media: ['meenakshi-2', 'meenakshi-3'],
+    publishedAt: '2026-07-24T06:45:00+05:30',
+  },
+  {
+    id: 'u7',
+    kind: 'announcement',
+    source: { type: 'district', id: 'dt-madurai', name: districts[0].name },
+    title: { ta: 'சிறப்பு பேருந்து வசதி', en: 'Special bus services' },
+    body: {
+      ta: 'திருவிழா நாட்களில் மதுரை சுற்றுவட்டாரத்தில் கூடுதல் பேருந்துகள் இயக்கப்படுகின்றன.',
+      en: 'Extra buses run across greater Madurai during the festival days.',
+    },
+    publishedAt: '2026-07-20T15:30:00+05:30',
+  },
+];
+
+/* -- current user + bookings + donations ----------------------------------- */
+
+export const bookings: Booking[] = [
+  {
+    id: 'b1',
+    code: 'TOS-MEEN-4821',
+    templeId: 't-meenakshi',
+    templeName: temples[0].name,
+    serviceName: { ta: 'சிறப்பு தரிசனம்', en: 'Quick Darshan' },
+    date: '2026-07-28',
+    slot: '06:00 – 07:00',
+    quantity: 2,
+    amountInr: 400,
+    status: 'confirmed',
+  },
+  {
+    id: 'b2',
+    code: 'TOS-PALA-1190',
+    templeId: 't-palani',
+    templeName: temples[4].name,
+    serviceName: { ta: 'அபிஷேகம்', en: 'Special Abhishekam' },
+    date: '2026-08-05',
+    slot: '05:00 – 05:30',
+    quantity: 1,
+    amountInr: 1500,
+    status: 'pending',
+  },
+  {
+    id: 'b3',
+    code: 'TOS-RANG-7734',
+    templeId: 't-ranganathaswamy',
+    templeName: temples[3].name,
+    serviceName: { ta: 'அர்ச்சனை', en: 'Archana' },
+    date: '2026-06-30',
+    slot: '18:00 – 18:30',
+    quantity: 1,
+    amountInr: 50,
+    status: 'used',
+  },
+];
+
+export const donations: Donation[] = [
+  {
+    id: 'don1',
+    templeId: 't-brihadeeswarar',
+    templeName: temples[1].name,
+    amountInr: 5000,
+    purpose: { ta: 'கோபுர மறுசீரமைப்பு', en: 'Gopuram restoration' },
+    date: '2026-05-12',
+    receiptNo: 'RCPT-2026-00912',
+  },
+  {
+    id: 'don2',
+    templeId: 't-meenakshi',
+    templeName: temples[0].name,
+    amountInr: 1116,
+    purpose: { ta: 'அன்னதானம்', en: 'Annadhanam' },
+    date: '2026-04-15',
+    receiptNo: 'RCPT-2026-00455',
+  },
+];
+
+export const renovations: RenovationProject[] = [
+  {
+    id: 'rp-nataraja',
+    templeId: 't-nataraja',
+    templeName: temples[7].name,
+    image: 'renovation-nataraja',
+    budgetInr: 42000000,
+    raisedInr: 27300000,
+    progressPct: 60,
+    title: { ta: 'கிழக்கு கோபுர மறுசீரமைப்பு', en: 'Eastern Gopuram Restoration' },
+    description: {
+      ta: 'சிதம்பரம் கிழக்கு கோபுரத்தின் சுதை சிற்பங்களை மீட்டெடுக்கும் திட்டம்.',
+      en: 'A project to restore the stucco sculptures of the Chidambaram east gopuram.',
+    },
+    milestones: [
+      { id: 'm1', date: '2026-01-10', completed: true, title: { ta: 'சாரக்கட்டு அமைப்பு', en: 'Scaffolding erected' } },
+      { id: 'm2', date: '2026-04-02', completed: true, title: { ta: 'சிற்ப ஆவணப்படுத்தல்', en: 'Sculpture documentation' } },
+      { id: 'm3', date: '2026-08-15', completed: false, title: { ta: 'சுதை வேலை', en: 'Stucco work' } },
+      { id: 'm4', date: '2026-11-30', completed: false, title: { ta: 'வண்ணம் தீட்டுதல்', en: 'Repainting' } },
+    ],
+    sponsors: [
+      { id: 'sp1', name: 'Chettinad Trust', amountInr: 10000000, tier: 'platinum' },
+      { id: 'sp2', name: 'Sundaram Family', amountInr: 5000000, tier: 'gold' },
+      { id: 'sp3', name: 'Devotees of Chidambaram', amountInr: 8300000, tier: 'patron' },
+    ],
+  },
+  {
+    id: 'rp-ekambareswarar',
+    templeId: 't-ekambareswarar',
+    templeName: temples[6].name,
+    image: 'renovation-ekambareswarar',
+    budgetInr: 18000000,
+    raisedInr: 6800000,
+    progressPct: 38,
+    title: { ta: 'ஆயிரம் கால் மண்டப பணி', en: 'Thousand-Pillar Hall Conservation' },
+    description: {
+      ta: 'காஞ்சிபுரம் மண்டபத் தூண்களை பாதுகாக்கும் திட்டம்.',
+      en: 'Conserving the ancient pillared hall at Kanchipuram.',
+    },
+    milestones: [
+      { id: 'm1', date: '2026-03-01', completed: true, title: { ta: 'கட்டமைப்பு ஆய்வு', en: 'Structural survey' } },
+      { id: 'm2', date: '2026-09-01', completed: false, title: { ta: 'தூண் உறுதிப்படுத்தல்', en: 'Pillar stabilisation' } },
+    ],
+    sponsors: [
+      { id: 'sp1', name: 'Kanchi Heritage Fund', amountInr: 4000000, tier: 'gold' },
+      { id: 'sp2', name: 'Devotees of Kanchipuram', amountInr: 2800000, tier: 'patron' },
+    ],
+  },
+];
+
+export const currentUser: User = {
+  id: 'me',
+  name: 'Deepak',
+  email: 'deepak.rv@zohocorp.com',
+  followingIds: ['t-meenakshi', 't-palani', 't-ranganathaswamy', 'dt-madurai', 'rp-nataraja'],
+  favouriteTempleIds: ['t-meenakshi', 't-brihadeeswarar'],
+  passport: {
+    templesVisited: 23,
+    routesCompleted: 1,
+    festivalsAttended: 4,
+    totalDonatedInr: 6116,
+    qrVisits: 17,
+    collections: [
+      { key: 'arupadai-veedu', total: 6, visited: 4, name: { ta: 'அறுபடை வீடு', en: 'Arupadai Veedu' } },
+      { key: 'navagraha', total: 9, visited: 6, name: { ta: 'நவகிரகம்', en: 'Navagraha' } },
+      { key: 'divya-desam', total: 108, visited: 12, name: { ta: 'திவ்ய தேசம்', en: 'Divya Desam' } },
+      { key: 'padal-petra-sthalam', total: 275, visited: 19, name: { ta: 'பாடல் பெற்ற தலம்', en: 'Padal Petra Sthalam' } },
+    ],
+  },
+};
+
+export const journey: import('@/types').JourneyRecap = {
+  year: 2025,
+  visits: 23,
+  donationsInr: 6116,
+  pilgrimages: 1,
+  favouriteTemple: temples[0].name,
+  heritageExplored: 14,
+  achievements: [
+    { ta: 'அறுபடை வீடு பாதி நிறைவு', en: 'Halfway through Arupadai Veedu' },
+    { ta: '4 திருவிழாக்களில் பங்கேற்பு', en: 'Attended 4 festivals' },
+    { ta: 'முதல் யாத்திரை நிறைவு', en: 'Completed your first pilgrimage' },
+  ],
+};
+
+export const kpis: Kpi[] = [
+  { id: 'k1', icon: 'Landmark', value: '46,218', label: { ta: 'கோயில்கள்', en: 'Temples' } },
+  { id: 'k2', icon: 'Users', value: '2.4M', delta: '+12%', label: { ta: 'பக்தர்கள்', en: 'Devotees' } },
+  { id: 'k3', icon: 'CalendarCheck', value: '318K', delta: '+8%', label: { ta: 'முன்பதிவுகள்', en: 'Bookings' } },
+  { id: 'k4', icon: 'HeartHandshake', value: '₹92 Cr', delta: '+21%', label: { ta: 'நன்கொடைகள்', en: 'Donations' } },
+];

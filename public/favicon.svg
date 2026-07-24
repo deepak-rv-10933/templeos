@@ -1,0 +1,12 @@
+<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="64" height="64" rx="16" fill="#7C6CF2" />
+  <!-- Gopuram silhouette -->
+  <g fill="#FFFFFF">
+    <path d="M32 10 L40 20 H24 Z" />
+    <rect x="25" y="22" width="14" height="4" rx="1" opacity="0.95" />
+    <path d="M22 28 H42 L40 33 H24 Z" opacity="0.9" />
+    <path d="M20 35 H44 L42 41 H22 Z" opacity="0.82" />
+    <path d="M18 43 H46 L44 50 H20 Z" opacity="0.74" />
+    <rect x="29" y="44" width="6" height="10" rx="1" fill="#7C6CF2" />
+  </g>
+</svg>
