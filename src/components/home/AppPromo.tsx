@@ -11,7 +11,7 @@ export function AppPromo() {
     <Container>
       <div
         className="relative overflow-hidden rounded-2xl px-6 py-8 sm:px-10 sm:py-10"
-        style={{ backgroundImage: 'linear-gradient(135deg, #1e1b4b, #4c1d95)' }}
+        style={{ backgroundImage: 'linear-gradient(135deg, #0f172a, #1e293b)' }}
       >
         <div className="flex flex-col items-center gap-8 md:flex-row md:justify-between">
           <div className="max-w-md text-center text-white md:text-left">

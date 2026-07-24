@@ -86,9 +86,9 @@ export function ContinueJourney() {
         <Link
           to="/my-temple"
           className="group flex flex-col justify-between gap-4 overflow-hidden rounded-lg p-4 text-white shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md"
-          style={{ backgroundImage: 'linear-gradient(135deg, #7C6CF2, #9D5BF0)' }}
+          style={{ backgroundImage: 'linear-gradient(135deg, #0f172a, #1e293b)' }}
         >
-          <span className="flex h-10 w-10 items-center justify-center rounded-full bg-white/20">
+          <span className="flex h-10 w-10 items-center justify-center rounded-full bg-white/15 text-warning">
             <Award className="h-5 w-5" />
           </span>
           <div>

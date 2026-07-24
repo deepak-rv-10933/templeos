@@ -4,8 +4,8 @@
   "description": "Official digital platform for temple discovery, pilgrimage planning, and online services for Tamil Nadu HR&CE.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#FAFAFC",
-  "theme_color": "#7C6CF2",
+  "background_color": "#FAFAF9",
+  "theme_color": "#C2410C",
   "lang": "ta",
   "icons": [
     { "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml" },

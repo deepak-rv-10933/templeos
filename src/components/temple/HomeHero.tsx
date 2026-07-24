@@ -29,8 +29,8 @@ export function HomeHero({ templeCount }: { templeCount?: string }) {
 
   return (
     <section
-      className="relative isolate flex min-h-[600px] items-center justify-center overflow-hidden md:min-h-[680px]"
-      style={{ backgroundColor: '#1e1b4b' }}
+      className="relative isolate flex min-h-[520px] items-center justify-center overflow-hidden md:min-h-[600px]"
+      style={{ backgroundColor: '#0f172a' }}
     >
       {/* Background photo */}
       <img
@@ -42,12 +42,12 @@ export function HomeHero({ templeCount }: { templeCount?: string }) {
         fetchPriority="high"
         className="absolute inset-0 -z-10 h-full w-full object-cover"
       />
-      {/* Dark violet scrim for text legibility over the colourful image */}
+      {/* Neutral dark scrim for text legibility over the photo */}
       <div
         className="absolute inset-0 -z-10"
         style={{
           background:
-            'linear-gradient(180deg, rgba(18,14,42,0.82) 0%, rgba(22,18,52,0.58) 42%, rgba(10,7,24,0.94) 100%)',
+            'linear-gradient(180deg, rgba(10,12,20,0.72) 0%, rgba(12,14,22,0.42) 42%, rgba(6,8,14,0.92) 100%)',
         }}
       />
 
@@ -55,7 +55,7 @@ export function HomeHero({ templeCount }: { templeCount?: string }) {
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-        className="relative mx-auto flex max-w-3xl flex-col items-center px-4 py-20 text-center sm:px-6"
+        className="relative mx-auto flex max-w-3xl flex-col items-center px-4 py-16 text-center sm:px-6"
       >
         {/* Badge */}
         <span className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-black/25 px-4 py-1.5 text-caption font-medium text-white/90 backdrop-blur-sm">
@@ -78,8 +78,8 @@ export function HomeHero({ templeCount }: { templeCount?: string }) {
           {t('home.onePlatform')}
         </p>
 
-        {/* Search */}
-        <form onSubmit={submit} className="mt-8 flex w-full max-w-2xl gap-2">
+        {/* Search — compact input + circular button */}
+        <form onSubmit={submit} className="mt-7 flex w-full max-w-lg gap-2">
           <div className="relative flex-1">
             <Search className="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-muted" />
             <input
@@ -87,12 +87,15 @@ export function HomeHero({ templeCount }: { templeCount?: string }) {
               onChange={(e) => setQ(e.target.value)}
               placeholder={t('home.searchPlaceholder')}
               aria-label={t('action.search')}
-              className="h-13 w-full rounded-full border border-white/20 bg-surface pl-12 pr-4 text-body text-text shadow-lg placeholder:text-muted focus:border-primary"
+              className="h-12 w-full rounded-full border border-white/20 bg-surface pl-11 pr-4 text-body text-text shadow-lg placeholder:text-muted focus:border-primary"
             />
           </div>
-          <Button type="submit" size="lg" className="rounded-full px-5 shadow-lg sm:px-7">
-            <Search className="h-5 w-5 sm:hidden" />
-            <span className="hidden sm:inline">{t('action.search')}</span>
+          <Button
+            type="submit"
+            aria-label={t('action.search')}
+            className="h-12 w-12 shrink-0 rounded-full p-0 shadow-lg"
+          >
+            <Search className="h-5 w-5" />
           </Button>
         </form>
 

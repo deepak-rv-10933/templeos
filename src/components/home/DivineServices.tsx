@@ -8,7 +8,7 @@ import { Container } from '@/components/common/Container';
 const SERVICES: { icon: LucideIcon; color: string; to: string; title: LocalizedText; sub: LocalizedText }[] = [
   {
     icon: Ticket,
-    color: '#7C6CF2',
+    color: '#C2410C',
     to: '/explore',
     title: { ta: 'தரிசன முன்பதிவு', en: 'Book Darshan' },
     sub: { ta: 'தரிசன நேரத்தை ஆன்லைனில் முன்பதிவு', en: 'Reserve your darshan slots online' },
@@ -43,7 +43,7 @@ const SERVICES: { icon: LucideIcon; color: string; to: string; title: LocalizedT
   },
   {
     icon: LifeBuoy,
-    color: '#8B5CF6',
+    color: '#0D9488',
     to: '/updates',
     title: { ta: 'உதவி & ஆதரவு', en: 'Help & Support' },
     sub: { ta: 'உதவி மற்றும் தகவல்கள்', en: 'Get assistance and information' },

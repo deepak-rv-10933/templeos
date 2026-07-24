@@ -70,7 +70,7 @@ export function ExploreByDistrict() {
         {/* Live stats */}
         <div
           className="overflow-hidden rounded-lg p-6 text-white shadow-sm"
-          style={{ backgroundImage: 'linear-gradient(150deg, #1e1b4b 0%, #4c1d95 55%, #6d28d9 100%)' }}
+          style={{ backgroundImage: 'linear-gradient(150deg, #0f172a 0%, #1e293b 60%, #334155 100%)' }}
         >
           <div className="grid grid-cols-2 gap-x-4 gap-y-6">
             {stats.map((s) => (

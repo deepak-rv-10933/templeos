@@ -8,8 +8,8 @@ export function BrandMark({ className }: { className?: string }) {
     <svg viewBox="0 0 64 64" className={cn('shrink-0', className)} aria-hidden role="img">
       <defs>
         <linearGradient id={id} x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0" stopColor="#8B7BF6" />
-          <stop offset="1" stopColor="#6A58EE" />
+          <stop offset="0" stopColor="#F59E0B" />
+          <stop offset="1" stopColor="#C2410C" />
         </linearGradient>
       </defs>
       <rect width="64" height="64" rx="15" fill={`url(#${id})`} />

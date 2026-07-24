@@ -21,16 +21,16 @@ function isUrl(s: string): boolean {
   return /^(https?:)?\/\//.test(s) || s.startsWith('/') || s.startsWith('data:');
 }
 
-/** Deterministic hue pair from a seed — kept in calm violet/indigo/rose range. */
+/** Deterministic hue pair from a seed — kept in a warm terracotta/saffron/gold range. */
 function gradientFor(seed: string): { from: string; to: string } {
   let hash = 0;
   for (let i = 0; i < seed.length; i++) hash = (hash * 31 + seed.charCodeAt(i)) >>> 0;
-  const base = 220 + (hash % 90); // 220–310 → indigo → violet → magenta
-  const h1 = base % 360;
-  const h2 = (base + 28) % 360;
+  const base = 18 + (hash % 40); // 18–58 → terracotta → saffron → gold
+  const h1 = base;
+  const h2 = base + 16;
   return {
-    from: `hsl(${h1} 58% 72%)`,
-    to: `hsl(${h2} 52% 58%)`,
+    from: `hsl(${h1} 56% 66%)`,
+    to: `hsl(${h2} 52% 52%)`,
   };
 }
 

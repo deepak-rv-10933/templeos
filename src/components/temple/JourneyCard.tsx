@@ -15,7 +15,7 @@ export function JourneyCard({ journey }: { journey: JourneyRecap }) {
     <div className="overflow-hidden rounded-xl border border-border shadow-md">
       <div
         className="p-6 text-white"
-        style={{ backgroundImage: 'linear-gradient(135deg, #7C6CF2, #9D5BF0)' }}
+        style={{ backgroundImage: 'linear-gradient(135deg, #0f172a, #1e293b)' }}
       >
         <div className="text-caption uppercase tracking-wide opacity-85">
           {lang === 'ta' ? 'உங்கள் கோயில் பயணம்' : 'Your Temple Journey'}

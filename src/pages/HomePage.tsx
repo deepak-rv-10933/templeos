@@ -40,7 +40,7 @@ export function HomePage() {
       {/* Full-bleed cover hero (Srirangam) */}
       <HomeHero templeCount={kpis.data?.[0]?.value} />
 
-      <div className="space-y-14 py-14">
+      <div className="space-y-12 py-10">
         {/* Continue your journey — bookings, saved temples, passport */}
         <ContinueJourney />
 

@@ -7,13 +7,15 @@
    ========================================================================== */
 @theme {
   /* --- Color ------------------------------------------------------------- */
-  --color-primary: #7c6cf2;
-  --color-primary-hover: #6a58ee;
+  /* Warm temple saffron — the single accent (buttons, links, active state). */
+  --color-primary: #c2410c;
+  --color-primary-hover: #9a3412;
   --color-primary-foreground: #ffffff;
 
   --color-surface: #ffffff;
-  --color-background: #fafafc;
-  --color-violet-light: #f5f3ff;
+  --color-background: #fafaf9;
+  /* Subtle warm tint used for icon tiles, hovers and selection. */
+  --color-violet-light: #fff7ed;
 
   --color-text: #111827;
   --color-muted: #6b7280;
@@ -23,11 +25,15 @@
   --color-warning: #f59e0b;
   --color-danger: #dc2626;
 
+  /* Neutral dark used for stat panels / promo — no violet. */
+  --color-ink: #0f172a;
+
   /* --- Typography -------------------------------------------------------- */
   --font-sans:
-    'Inter', 'Noto Sans Tamil', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto,
-    sans-serif;
-  --font-tamil: 'Noto Sans Tamil', 'Inter', ui-sans-serif, system-ui, sans-serif;
+    'Inter', 'Hind Madurai', 'Noto Sans Tamil', ui-sans-serif, system-ui, -apple-system,
+    'Segoe UI', Roboto, sans-serif;
+  /* Compact, government-portal Tamil face → tighter, less scrolling. */
+  --font-tamil: 'Hind Madurai', 'Noto Sans Tamil', 'Inter', ui-sans-serif, system-ui, sans-serif;
 
   /* Type scale (spec §4) — size / line-height / tracking / weight */
   --text-display: 3.5rem;
@@ -78,7 +84,7 @@
   --shadow-sm: 0 1px 3px 0 rgb(17 24 39 / 0.06), 0 1px 2px -1px rgb(17 24 39 / 0.04);
   --shadow-md: 0 4px 16px -2px rgb(17 24 39 / 0.06), 0 2px 6px -2px rgb(17 24 39 / 0.05);
   --shadow-lg: 0 12px 32px -6px rgb(17 24 39 / 0.10), 0 4px 12px -4px rgb(17 24 39 / 0.06);
-  --shadow-focus: 0 0 0 3px rgb(124 108 242 / 0.28);
+  --shadow-focus: 0 0 0 3px rgb(194 65 12 / 0.28);
 
   /* --- Motion ----------------------------------------------------------- */
   --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
