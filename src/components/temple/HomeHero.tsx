@@ -41,13 +41,14 @@ export function HomeHero({ templeCount }: { templeCount?: string }) {
         loading="eager"
         fetchPriority="high"
         className="absolute inset-0 -z-10 h-full w-full object-cover"
+        style={{ objectPosition: 'center 35%' }}
       />
-      {/* Dark violet scrim for text legibility */}
+      {/* Dark violet scrim for text legibility over the colourful image */}
       <div
         className="absolute inset-0 -z-10"
         style={{
           background:
-            'linear-gradient(180deg, rgba(23,20,54,0.82) 0%, rgba(30,27,75,0.42) 40%, rgba(15,10,31,0.92) 100%)',
+            'linear-gradient(180deg, rgba(18,14,42,0.82) 0%, rgba(22,18,52,0.58) 42%, rgba(10,7,24,0.94) 100%)',
         }}
       />
 
