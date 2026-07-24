@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import {
   Building2,
   Flame,
@@ -8,6 +8,8 @@ import {
   LayoutGrid,
   List,
   Map as MapIcon,
+  MapPin,
+  Navigation,
   Orbit,
   Search,
   Sparkles,
@@ -15,11 +17,12 @@ import {
   Sun,
 } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
-import type { LocalizedText, TempleCategoryKey, TempleQuery } from '@/types';
+import type { LocalizedText, Temple, TempleCategoryKey, TempleQuery } from '@/types';
 import { useLocale } from '@/store/locale';
 import { useDistricts, useTemples } from '@/hooks/queries';
 import { Container } from '@/components/common/Container';
 import { EmptyState } from '@/components/common/EmptyState';
+import { SmartImage } from '@/components/ui/SmartImage';
 import { TempleCard, TempleCardSkeleton, TempleMap } from '@/components/temple';
 import { cn } from '@/utils/cn';
 
@@ -42,15 +45,56 @@ const VIEWS: { key: View; icon: LucideIcon }[] = [
   { key: 'map', icon: MapIcon },
 ];
 
+/** Compact row layout for the "list" view — distinct from the photo-grid. */
+function TempleListRow({ temple }: { temple: Temple }) {
+  const { tx } = useLocale();
+  return (
+    <Link
+      to={`/temple/${temple.slug}`}
+      className="flex items-center gap-4 rounded-lg border border-border bg-surface p-3 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md"
+    >
+      <div className="h-16 w-16 shrink-0 overflow-hidden rounded-md sm:h-20 sm:w-20">
+        <SmartImage src={temple.heroImage} alt={tx(temple.name)} className="h-full" />
+      </div>
+      <div className="min-w-0 flex-1">
+        <div className="flex items-center gap-2">
+          <h3 className="line-clamp-1 font-semibold text-text">{tx(temple.name)}</h3>
+          <span className={cn('h-1.5 w-1.5 shrink-0 rounded-full', temple.isOpenNow ? 'bg-success' : 'bg-danger')} />
+        </div>
+        <p className="mt-0.5 line-clamp-1 text-caption text-muted">{tx(temple.deity.name)}</p>
+        <p className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-caption text-muted">
+          <span className="inline-flex items-center gap-1">
+            <MapPin className="h-3.5 w-3.5" />
+            {tx(temple.town)}
+          </span>
+          {temple.distanceKm !== undefined && (
+            <span className="inline-flex items-center gap-1">
+              <Navigation className="h-3.5 w-3.5" />
+              {temple.distanceKm.toFixed(1)} {tx({ ta: 'கி.மீ', en: 'km' })}
+            </span>
+          )}
+          <span className="inline-flex items-center gap-1">
+            <Star className="h-3.5 w-3.5 fill-warning text-warning" />
+            {temple.rating.toFixed(1)}
+          </span>
+        </p>
+      </div>
+    </Link>
+  );
+}
+
 export function ExplorePage() {
   const { t, tx } = useLocale();
   const [params, setParams] = useSearchParams();
   const [view, setView] = useState<View>('grid');
 
-  const [search, setSearch] = useState(params.get('search') ?? '');
+  // Every filter is derived from (and written back to) the URL, so external
+  // navigations — e.g. from Ask Nandi — always take effect even when Explore
+  // is already mounted, and filters stay shareable/back-button-correct.
+  const search = params.get('search') ?? '';
   const category = (params.get('category') as TempleCategoryKey | null) ?? undefined;
-  const [districtId, setDistrictId] = useState<string>(params.get('district') ?? '');
-  const [openNow, setOpenNow] = useState(params.get('openNow') === '1');
+  const districtId = params.get('district') ?? '';
+  const openNow = params.get('openNow') === '1';
   const [selectedId, setSelectedId] = useState<string | undefined>();
 
   const districts = useDistricts();
@@ -61,17 +105,10 @@ export function ExplorePage() {
   );
   const temples = useTemples(query);
 
-  const setCategory = (key: string) => {
+  const setParam = (key: string, value: string) => {
     const next = new URLSearchParams(params);
-    if (key) next.set('category', key);
-    else next.delete('category');
-    setParams(next, { replace: true });
-  };
-  const setSearchParam = (value: string) => {
-    setSearch(value);
-    const next = new URLSearchParams(params);
-    if (value) next.set('search', value);
-    else next.delete('search');
+    if (value) next.set(key, value);
+    else next.delete(key);
     setParams(next, { replace: true });
   };
 
@@ -83,7 +120,7 @@ export function ExplorePage() {
           <Search className="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-muted" />
           <input
             value={search}
-            onChange={(e) => setSearchParam(e.target.value)}
+            onChange={(e) => setParam('search', e.target.value)}
             placeholder={t('home.searchPlaceholder')}
             aria-label={t('action.search')}
             className="h-12 w-full rounded-full border border-border bg-surface pl-12 pr-4 text-body shadow-sm placeholder:text-muted focus:border-primary"
@@ -114,7 +151,7 @@ export function ExplorePage() {
           return (
             <button
               key={p.key || 'all'}
-              onClick={() => setCategory(p.key)}
+              onClick={() => setParam('category', p.key)}
               className={cn(
                 'inline-flex shrink-0 items-center gap-1.5 rounded-full border px-3.5 py-2 text-caption font-medium transition-colors',
                 active
@@ -133,8 +170,8 @@ export function ExplorePage() {
       <div className="mt-3 flex flex-wrap items-center gap-2">
         <select
           value={districtId}
-          onChange={(e) => setDistrictId(e.target.value)}
-          className="h-9 w-40 shrink-0 truncate rounded-full border border-border bg-surface px-4 text-caption text-text focus:border-primary"
+          onChange={(e) => setParam('district', e.target.value)}
+          className="h-9 w-auto max-w-56 shrink-0 truncate rounded-full border border-border bg-surface px-4 text-caption text-text focus:border-primary"
         >
           <option value="">{tx({ ta: 'எல்லா மாவட்டமும்', en: 'All districts' })}</option>
           {districts.data?.map((d) => (
@@ -144,7 +181,7 @@ export function ExplorePage() {
           ))}
         </select>
         <button
-          onClick={() => setOpenNow((o) => !o)}
+          onClick={() => setParam('openNow', openNow ? '' : '1')}
           aria-pressed={openNow}
           className={cn(
             'h-9 shrink-0 rounded-full border px-4 text-caption font-medium transition-colors',
@@ -191,8 +228,8 @@ export function ExplorePage() {
             </div>
           </div>
         ) : view === 'list' ? (
-          <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
-            {temples.data?.map((tpl) => <TempleCard key={tpl.id} temple={tpl} />)}
+          <div className="grid grid-cols-1 gap-3 lg:grid-cols-2">
+            {temples.data?.map((tpl) => <TempleListRow key={tpl.id} temple={tpl} />)}
           </div>
         ) : (
           <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">

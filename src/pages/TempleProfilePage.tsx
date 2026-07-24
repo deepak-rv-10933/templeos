@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import {
   Check,
@@ -48,6 +48,9 @@ export function TempleProfilePage() {
   const toggleFollow = useToggleFollow();
 
   const [booking, setBooking] = useState<{ open: boolean; service?: TempleService }>({ open: false });
+  const [tab, setTab] = useState('overview');
+  const [shared, setShared] = useState(false);
+  const tabsRef = useRef<HTMLDivElement>(null);
 
   if (temple.isLoading) {
     return (
@@ -83,6 +86,30 @@ export function TempleProfilePage() {
     'nearby',
   ] as const;
 
+  const goToServices = () => {
+    setTab('services');
+    tabsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
+
+  const openMaps = () => {
+    window.open(`https://www.google.com/maps?q=${d.location.lat},${d.location.lng}`, '_blank', 'noopener,noreferrer');
+  };
+
+  const share = async () => {
+    const shareData = { title: tx(d.name), url: window.location.href };
+    if (navigator.share) {
+      try {
+        await navigator.share(shareData);
+      } catch {
+        // user cancelled the native share sheet — no error state needed
+      }
+      return;
+    }
+    await navigator.clipboard.writeText(window.location.href);
+    setShared(true);
+    setTimeout(() => setShared(false), 2000);
+  };
+
   return (
     <div className="pb-8">
       {/* Hero */}
@@ -93,13 +120,19 @@ export function TempleProfilePage() {
           <div className="pb-6 text-white">
             <div className="flex flex-wrap items-center gap-2">
               {d.isOpenNow ? (
-                <Badge tone="success" dot>
+                <span className="inline-flex items-center gap-1.5 rounded-full bg-white px-2.5 py-1 text-caption font-semibold text-success-text shadow-md">
+                  <span className="h-1.5 w-1.5 rounded-full bg-success" />
                   {t('common.openNow')}
-                </Badge>
+                </span>
               ) : (
-                <Badge tone="default">{t('common.closed')}</Badge>
+                <span className="inline-flex items-center gap-1.5 rounded-full bg-white px-2.5 py-1 text-caption font-semibold text-danger shadow-md">
+                  <span className="h-1.5 w-1.5 rounded-full bg-danger" />
+                  {t('common.closed')}
+                </span>
               )}
-              <Badge tone="primary">{tx(d.deity.name)}</Badge>
+              <span className="inline-flex items-center rounded-full bg-white px-2.5 py-1 text-caption font-semibold text-primary-hover shadow-md">
+                {tx(d.deity.name)}
+              </span>
             </div>
             <h1 className="mt-2 text-h1">{tx(d.name)}</h1>
             <p className="mt-1 flex items-center gap-2 text-body text-white/85">
@@ -128,22 +161,22 @@ export function TempleProfilePage() {
           <Button leftIcon={<Ticket className="h-4 w-4" />} onClick={() => setBooking({ open: true })}>
             {t('action.book')}
           </Button>
-          <Button variant="outline" leftIcon={<Heart className="h-4 w-4" />}>
+          <Button variant="outline" leftIcon={<Heart className="h-4 w-4" />} onClick={goToServices}>
             {t('action.donate')}
           </Button>
-          <Button variant="outline" leftIcon={<MapPin className="h-4 w-4" />}>
+          <Button variant="outline" leftIcon={<MapPin className="h-4 w-4" />} onClick={openMaps}>
             {t('action.navigate')}
           </Button>
-          <Button variant="ghost" leftIcon={<Share2 className="h-4 w-4" />}>
-            {t('action.share')}
+          <Button variant="ghost" leftIcon={<Share2 className="h-4 w-4" />} onClick={share}>
+            {shared ? tx({ ta: 'இணைப்பு நகலெடுக்கப்பட்டது', en: 'Link copied' }) : t('action.share')}
           </Button>
         </div>
       </Container>
 
       {/* Tabs */}
       <Container>
-        <Tabs defaultValue="overview">
-          <div className="sticky top-16 z-20 -mx-4 bg-background/80 px-4 py-2 backdrop-blur-md sm:top-16">
+        <Tabs value={tab} onValueChange={setTab}>
+          <div ref={tabsRef} className="sticky top-16 z-20 -mx-4 bg-background/80 px-4 py-2 backdrop-blur-md sm:top-16">
             <TabsList>
               {tabs.map((key) => (
                 <TabsTrigger key={key} value={key}>
@@ -288,7 +321,7 @@ export function TempleProfilePage() {
                     {d.heritage.has360Tour && (
                       <Badge tone="primary">
                         <Orbit className="h-3.5 w-3.5" />
-                        360° {tx({ ta: 'சுற்றுலா', en: 'Tour' })}
+                        360° {tx({ ta: 'காட்சி', en: 'Tour' })}
                       </Badge>
                     )}
                     {d.heritage.hasDroneGallery && (
@@ -337,7 +370,7 @@ export function TempleProfilePage() {
               {templeFestivals.length ? (
                 <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
                   {templeFestivals.map((f) => (
-                    <FestivalCard key={f.id} festival={f} />
+                    <FestivalCard key={f.id} festival={f} linkToTemple={false} />
                   ))}
                 </div>
               ) : (

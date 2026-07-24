@@ -13,7 +13,7 @@ const SUGGESTIONS: LocalizedText[] = [
   { ta: 'ஆடியோ வழிகாட்டி உள்ள பாரம்பரிய கோயில்கள்', en: 'Heritage temples with audio guides' },
   { ta: 'மதுரையில் புகழ்பெற்ற அம்மன் கோயில்கள்', en: 'Famous Amman temples in Madurai' },
   { ta: 'விஷ்ணு கோயில்கள்', en: 'Vishnu temples' },
-  { ta: 'சக்கர நாற்காலி அணுகல் கோயில்கள்', en: 'Wheelchair accessible temples' },
+  { ta: 'சக்கர நாற்காலி அணுகல் உள்ள கோயில்கள்', en: 'Wheelchair accessible temples' },
 ];
 
 const DEITY_KEYWORDS: { match: RegExp; category: string }[] = [
@@ -61,16 +61,16 @@ export function AskAI() {
       <button
         onClick={() => setOpen(true)}
         className="fixed bottom-20 right-4 z-40 inline-flex items-center gap-2 rounded-full bg-primary px-4 py-3 font-medium text-primary-foreground shadow-lg transition-all hover:bg-primary-hover active:scale-95 md:bottom-6 md:right-6"
-        aria-label={tx({ ta: 'நந்தியிடம் கேள்', en: 'Ask Nandi' })}
+        aria-label={tx({ ta: 'நந்தியிடம் கேளுங்கள்', en: 'Ask Nandi' })}
       >
         <Sparkles className="h-5 w-5" />
-        <span className="hidden sm:inline">{tx({ ta: 'நந்தியிடம் கேள்', en: 'Ask Nandi' })}</span>
+        <span className="hidden sm:inline">{tx({ ta: 'நந்தியிடம் கேளுங்கள்', en: 'Ask Nandi' })}</span>
       </button>
 
-      <Dialog open={open} onClose={() => setOpen(false)} title={tx({ ta: 'நந்தியிடம் கேள்', en: 'Ask Nandi' })}>
+      <Dialog open={open} onClose={() => setOpen(false)} title={tx({ ta: 'நந்தியிடம் கேளுங்கள்', en: 'Ask Nandi' })}>
         <p className="-mt-2 mb-4 text-body text-muted">
           {tx({
-            ta: 'உங்கள் ஆன்மீக கோயில் வழிகாட்டி. நீங்கள் தேடுவதை விவரியுங்கள்.',
+            ta: 'உங்கள் ஆன்மீகக் கோயில் வழிகாட்டி. நீங்கள் தேடுவதை விவரியுங்கள்.',
             en: 'Your spiritual temple guide — describe what you’re looking for.',
           })}
         </p>

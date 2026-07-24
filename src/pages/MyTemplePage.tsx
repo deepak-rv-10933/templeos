@@ -41,7 +41,7 @@ export function MyTemplePage() {
           {tx({ ta: 'வணக்கம்', en: 'Vanakkam' })}, {me.data?.name ?? '…'}
         </h1>
         <p className="mt-1 text-body text-muted">
-          {tx({ ta: 'உங்கள் ஆன்மீக பயணத்தின் மையம்.', en: 'The hub for your spiritual journey.' })}
+          {tx({ ta: 'உங்கள் ஆன்மீகப் பயணத்தின் மையம்.', en: 'The hub for your spiritual journey.' })}
         </p>
       </div>
 

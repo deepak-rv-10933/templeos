@@ -1,5 +1,6 @@
 import { useLocale } from '@/store/locale';
 import { useBookings } from '@/hooks/queries';
+import { statusLabel, statusTone } from '@/components/temple/bookingStatus';
 import { Badge } from '@/components/ui/Badge';
 import { Table, TBody, TD, TH, THead, TR } from '@/components/ui/Table';
 import { formatDate, formatInr } from '@/utils/format';
@@ -38,17 +39,7 @@ export function AdminBookings() {
               <TD className="text-muted">{formatDate(b.date, lang)}</TD>
               <TD className="text-muted">{b.slot}</TD>
               <TD>
-                <Badge
-                  tone={
-                    b.status === 'confirmed'
-                      ? 'success'
-                      : b.status === 'pending'
-                        ? 'warning'
-                        : 'default'
-                  }
-                >
-                  {b.status}
-                </Badge>
+                <Badge tone={statusTone[b.status]}>{tx(statusLabel[b.status])}</Badge>
               </TD>
               <TD className="text-right font-medium">{formatInr(b.amountInr)}</TD>
             </TR>

@@ -10,9 +10,9 @@ type CrowdTone = 'low' | 'moderate' | 'heavy';
 /** Deterministic crowd level derived from popularity (mock stand-in for live data). */
 function crowdLevel(temple: Temple): { label: LocalizedText; tone: CrowdTone } {
   // Tamil kept to the level word (the people icon signals "crowd"); English fits full.
-  if (temple.followers > 150000) return { label: { ta: 'அதிக', en: 'Heavy crowd' }, tone: 'heavy' };
-  if (temple.followers > 80000) return { label: { ta: 'மிதமான', en: 'Moderate crowd' }, tone: 'moderate' };
-  return { label: { ta: 'குறைந்த', en: 'Low crowd' }, tone: 'low' };
+  if (temple.followers > 150000) return { label: { ta: 'அதிகக் கூட்டம்', en: 'Heavy crowd' }, tone: 'heavy' };
+  if (temple.followers > 80000) return { label: { ta: 'மிதமான கூட்டம்', en: 'Moderate crowd' }, tone: 'moderate' };
+  return { label: { ta: 'குறைந்த கூட்டம்', en: 'Low crowd' }, tone: 'low' };
 }
 
 const crowdColor: Record<CrowdTone, string> = {
@@ -74,12 +74,19 @@ export function TempleCard({ temple }: { temple: Temple }) {
           alt={tx(temple.name)}
           className="transition-transform duration-500 group-hover:scale-[1.04]"
         />
-        {/* Status overlays — always "open", with a compact crowd indicator */}
+        {/* Status overlays — driven by temple.isOpenNow, with a compact crowd indicator */}
         <div className="absolute inset-x-3 top-3 flex items-start justify-between gap-2">
-          <StatusPill className="shrink-0">
-            <span className="h-1.5 w-1.5 rounded-full bg-success" />
-            <span className="text-success">{tx({ ta: 'திறந்திருக்கும்', en: 'Open now' })}</span>
-          </StatusPill>
+          {temple.isOpenNow ? (
+            <StatusPill className="shrink-0">
+              <span className="h-1.5 w-1.5 rounded-full bg-success" />
+              <span className="text-success-text">{tx({ ta: 'திறந்துள்ளது', en: 'Open now' })}</span>
+            </StatusPill>
+          ) : (
+            <StatusPill className="shrink-0">
+              <span className="h-1.5 w-1.5 rounded-full bg-danger" />
+              <span className="text-danger">{tx({ ta: 'மூடப்பட்டுள்ளது', en: 'Closed' })}</span>
+            </StatusPill>
+          )}
           <span
             title={tx(crowd.label)}
             aria-label={tx(crowd.label)}

@@ -23,7 +23,7 @@ export function ExploreByDistrict() {
     { icon: Landmark, value: templeCount, label: tx({ ta: 'கோயில்கள்', en: 'Temples' }) },
     { icon: MapPin, value: '38', label: tx({ ta: 'மாவட்டங்கள்', en: 'Districts' }) },
     { icon: CalendarCheck, value: '12,500+', label: tx({ ta: 'தினசரி முன்பதிவுகள்', en: 'Daily bookings' }) },
-    { icon: ShieldCheck, value: '99.98%', label: tx({ ta: 'கிடைக்கும் நேரம்', en: 'System availability' }) },
+    { icon: ShieldCheck, value: '99.98%', label: tx({ ta: 'சேவைக் கிடைப்பு', en: 'System availability' }) },
   ];
 
   return (

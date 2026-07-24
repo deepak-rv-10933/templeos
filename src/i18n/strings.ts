@@ -27,11 +27,11 @@ export const strings = {
     book: { ta: 'முன்பதிவு', en: 'Book' },
     donate: { ta: 'நன்கொடை', en: 'Donate' },
     navigate: { ta: 'வழிகாட்டு', en: 'Navigate' },
-    share: { ta: 'பகிர்', en: 'Share' },
+    share: { ta: 'பகிர்க', en: 'Share' },
     viewAll: { ta: 'அனைத்தையும் காண', en: 'View all' },
-    search: { ta: 'தேடு', en: 'Search' },
+    search: { ta: 'தேடுக', en: 'Search' },
     seeMore: { ta: 'மேலும் காண', en: 'See more' },
-    back: { ta: 'பின்செல்', en: 'Back' },
+    back: { ta: 'பின் செல்க', en: 'Back' },
   },
 
   home: {
@@ -72,7 +72,7 @@ export const strings = {
     poojas: { ta: 'பூஜைகள்', en: 'Poojas' },
     services: { ta: 'சேவைகள்', en: 'Services' },
     donations: { ta: 'நன்கொடைகள்', en: 'Donations' },
-    renovation: { ta: 'மறுசீரமைப்பு', en: 'Renovation' },
+    renovation: { ta: 'திருப்பணி', en: 'Renovation' },
     heritage: { ta: 'பாரம்பரியம்', en: 'Heritage' },
     facilities: { ta: 'வசதிகள்', en: 'Facilities' },
     festivals: { ta: 'திருவிழாக்கள்', en: 'Festivals' },

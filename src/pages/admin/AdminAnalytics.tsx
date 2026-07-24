@@ -11,10 +11,10 @@ export function AdminAnalytics() {
 
   const maxCount = Math.max(...(districts.data?.map((d) => d.templeCount) ?? [1]));
   const dimensions = [
-    { label: { ta: 'மாநிலம்', en: 'State' }, value: '38 districts' },
-    { label: { ta: 'வருகையாளர்கள்', en: 'Visitors' }, value: '2.4M / mo' },
-    { label: { ta: 'திருவிழாக்கள்', en: 'Festivals' }, value: '1,284 / yr' },
-    { label: { ta: 'வருவாய்', en: 'Revenue' }, value: '₹92 Cr' },
+    { label: { ta: 'மாநிலம்', en: 'State' }, value: { ta: '38 மாவட்டங்கள்', en: '38 districts' } },
+    { label: { ta: 'வருகையாளர்கள்', en: 'Visitors' }, value: { ta: '24 லட்சம் / மாதம்', en: '2.4M / mo' } },
+    { label: { ta: 'திருவிழாக்கள்', en: 'Festivals' }, value: { ta: '1,284 / ஆண்டு', en: '1,284 / yr' } },
+    { label: { ta: 'வருவாய்', en: 'Revenue' }, value: { ta: '₹92 கோடி', en: '₹92 Cr' } },
   ];
 
   return (
@@ -57,7 +57,7 @@ export function AdminAnalytics() {
           {dimensions.map((dim) => (
             <Card key={dim.label.en} padded>
               <div className="text-caption text-muted">{tx(dim.label)}</div>
-              <div className="mt-1 text-h3 tabular-nums">{dim.value}</div>
+              <div className="mt-1 text-h3 tabular-nums">{tx(dim.value)}</div>
             </Card>
           ))}
         </div>

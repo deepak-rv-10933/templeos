@@ -68,12 +68,22 @@ export function RouteDetailPage() {
       <Container className="py-6">
         <p className="max-w-2xl text-body-lg text-text">{tx(r.description)}</p>
 
-        <h2 className="mb-4 mt-8 text-h3">{tx({ ta: 'நிறுத்தங்கள்', en: 'Stops on this route' })}</h2>
+        <h2 className="mb-4 mt-8 text-h3">
+          {tx({ ta: 'இந்த யாத்திரையில் இடம்பெறும் கோயில்கள்', en: 'Temples on this route' })}
+        </h2>
         <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {stops.map((tpl) => (
             <TempleCard key={tpl.id} temple={tpl} />
           ))}
         </div>
+        {r.stops > stops.length && (
+          <p className="mt-4 text-caption text-muted">
+            {tx({
+              ta: `மேலும் ${r.stops - stops.length} தலங்கள் இந்த வழித்தடத்தில் உள்ளன`,
+              en: `${r.stops - stops.length} more stops on this circuit`,
+            })}
+          </p>
+        )}
 
         {stops.length > 0 && <TempleMap temples={stops} className="mt-8 h-80" />}
       </Container>

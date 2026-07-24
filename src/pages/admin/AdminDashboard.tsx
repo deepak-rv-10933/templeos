@@ -1,6 +1,7 @@
 import { useLocale } from '@/store/locale';
 import { useBookings, useKpis, useRenovations } from '@/hooks/queries';
 import { KpiStat } from '@/components/temple';
+import { statusLabel, statusTone } from '@/components/temple/bookingStatus';
 import { Card } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
 import { ProgressBar } from '@/components/ui/ProgressBar';
@@ -47,17 +48,7 @@ export function AdminDashboard() {
                   <TD className="font-medium">{tx(b.templeName)}</TD>
                   <TD className="text-muted">{formatDate(b.date, lang)}</TD>
                   <TD>
-                    <Badge
-                      tone={
-                        b.status === 'confirmed'
-                          ? 'success'
-                          : b.status === 'pending'
-                            ? 'warning'
-                            : 'default'
-                      }
-                    >
-                      {b.status}
-                    </Badge>
+                    <Badge tone={statusTone[b.status]}>{tx(statusLabel[b.status])}</Badge>
                   </TD>
                   <TD className="text-right font-medium">{formatInr(b.amountInr)}</TD>
                 </TR>

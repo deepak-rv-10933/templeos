@@ -7,8 +7,8 @@ const columns = [
     title: { ta: 'கண்டறி', en: 'Discover' },
     links: [
       { label: { ta: 'கோயில்கள்', en: 'Temples' }, to: '/explore' },
-      { label: { ta: 'திருவிழாக்கள்', en: 'Festivals' }, to: '/explore?tab=festivals' },
-      { label: { ta: 'யாத்திரைகள்', en: 'Pilgrimages' }, to: '/explore?tab=routes' },
+      { label: { ta: 'திருவிழாக்கள்', en: 'Festivals' }, to: '/updates' },
+      { label: { ta: 'யாத்திரைகள்', en: 'Pilgrimages' }, to: '/explore' },
       { label: { ta: 'செய்திகள்', en: 'Updates' }, to: '/updates' },
     ],
   },
@@ -17,18 +17,13 @@ const columns = [
     links: [
       { label: { ta: 'முன்பதிவு', en: 'Bookings' }, to: '/bookings' },
       { label: { ta: 'நன்கொடை', en: 'Donations' }, to: '/my-temple' },
-      { label: { ta: 'மறுசீரமைப்பு', en: 'Renovation' }, to: '/explore' },
+      { label: { ta: 'திருப்பணி', en: 'Renovation' }, to: '/explore' },
       { label: { ta: 'என் கோயில்', en: 'My Temple' }, to: '/my-temple' },
     ],
   },
   {
-    title: { ta: 'நிறுவனம்', en: 'HR&CE' },
-    links: [
-      { label: { ta: 'எங்களைப் பற்றி', en: 'About' }, to: '/' },
-      { label: { ta: 'நிர்வாகம்', en: 'Admin' }, to: '/admin' },
-      { label: { ta: 'தொடர்பு', en: 'Contact' }, to: '/' },
-      { label: { ta: 'தனியுரிமை', en: 'Privacy' }, to: '/' },
-    ],
+    title: { ta: 'துறை', en: 'HR&CE' },
+    links: [{ label: { ta: 'நிர்வாகம்', en: 'Admin' }, to: '/admin' }],
   },
 ];
 

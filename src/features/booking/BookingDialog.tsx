@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Check, CreditCard } from 'lucide-react';
 import type { Temple, TempleService } from '@/types';
@@ -26,22 +26,33 @@ export function BookingDialog({
   const create = useCreateBooking();
 
   const bookable = temple.services.filter((s) => s.bookable);
-  const [serviceId, setServiceId] = useState(service?.id ?? bookable[0]?.id ?? '');
-  const selectedService = bookable.find((s) => s.id === serviceId) ?? bookable[0];
-
-  const today = '2026-07-25';
   const dates = useMemo(
     () =>
       Array.from({ length: 5 }).map((_, i) => {
-        const d = new Date('2026-07-25T00:00:00');
+        const d = new Date(2026, 6, 25);
         d.setDate(d.getDate() + i);
-        return d.toISOString().slice(0, 10);
+        return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
       }),
     [],
   );
-  const [date, setDate] = useState(today);
-  const slots = useSlots(temple.id, date);
+
+  const [serviceId, setServiceId] = useState(service?.id ?? bookable[0]?.id ?? '');
+  const [date, setDate] = useState(dates[0]);
   const [slot, setSlot] = useState<string>('');
+
+  // Reset the flow's transient state every time the dialog opens, so a
+  // service picked from the Services tab always wins, and a half-filled
+  // session from a previous open never leaks into the next one.
+  useEffect(() => {
+    if (!open) return;
+    setServiceId(service?.id ?? bookable[0]?.id ?? '');
+    setDate(dates[0]);
+    setSlot('');
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [open, service?.id]);
+
+  const selectedService = bookable.find((s) => s.id === serviceId) ?? bookable[0];
+  const slots = useSlots(temple.id, date);
 
   const canConfirm = !!selectedService && !!date && !!slot;
 
@@ -155,7 +166,7 @@ export function BookingDialog({
             loading={create.isPending}
             leftIcon={<CreditCard className="h-4 w-4" />}
           >
-            {tx({ ta: 'உறுதி செய் & பணம்', en: 'Confirm & pay' })}
+            {tx({ ta: 'உறுதிசெய்து பணம் செலுத்துங்கள்', en: 'Confirm & pay' })}
           </Button>
         </div>
         <p className="flex items-center justify-center gap-1.5 text-caption text-muted">

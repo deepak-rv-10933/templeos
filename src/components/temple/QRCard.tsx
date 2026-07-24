@@ -32,7 +32,7 @@ export function QRCard({ booking }: { booking: Booking }) {
         </div>
       </div>
       <div className="border-t border-dashed border-border px-5 py-3 text-center text-caption text-muted">
-        {lang === 'ta' ? 'கோயில் நுழைவில் ஸ்கேன் செய்யவும்' : 'Show at the temple entrance to scan'}
+        {lang === 'ta' ? 'கோயில் நுழைவாயிலில் இந்த QR-ஐக் காட்டவும்' : 'Show this code at the temple entrance'}
       </div>
     </div>
   );

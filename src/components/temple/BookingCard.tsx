@@ -1,23 +1,10 @@
 import { Link } from 'react-router-dom';
 import { CalendarDays, Clock, QrCode, Users } from 'lucide-react';
-import type { Booking, BookingStatus, LocalizedText } from '@/types';
+import type { Booking } from '@/types';
 import { useLocale } from '@/store/locale';
 import { formatDate, formatInr } from '@/utils/format';
 import { Badge } from '@/components/ui/Badge';
-
-const statusLabel: Record<BookingStatus, LocalizedText> = {
-  confirmed: { ta: 'உறுதி', en: 'Confirmed' },
-  pending: { ta: 'நிலுவையில்', en: 'Pending' },
-  used: { ta: 'பயன்படுத்தப்பட்டது', en: 'Used' },
-  cancelled: { ta: 'ரத்து', en: 'Cancelled' },
-};
-
-const statusTone: Record<BookingStatus, 'success' | 'warning' | 'default' | 'danger'> = {
-  confirmed: 'success',
-  pending: 'warning',
-  used: 'default',
-  cancelled: 'danger',
-};
+import { statusLabel, statusTone } from './bookingStatus';
 
 export function BookingCard({ booking }: { booking: Booking }) {
   const { tx, lang } = useLocale();

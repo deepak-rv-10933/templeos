@@ -9,7 +9,7 @@ import { Button } from '@/components/ui/Button';
 
 const chips: { label: { ta: string; en: string }; to: string; icon: LucideIcon }[] = [
   { label: { ta: 'சிவன்', en: 'Shiva' }, to: '/explore?category=shiva', icon: Flame },
-  { label: { ta: 'விஷ்ணு', en: 'Vishnu' }, to: '/explore?category=divya-desam', icon: Sparkles },
+  { label: { ta: 'விஷ்ணு', en: 'Vishnu' }, to: '/explore?category=vishnu', icon: Sparkles },
   { label: { ta: 'முருகன்', en: 'Murugan' }, to: '/explore?category=murugan', icon: Sun },
   { label: { ta: 'அம்மன்', en: 'Amman' }, to: '/explore?search=Amman', icon: Flower2 },
   { label: { ta: 'நவகிரகம்', en: 'Navagraha' }, to: '/explore?category=navagraha', icon: Orbit },

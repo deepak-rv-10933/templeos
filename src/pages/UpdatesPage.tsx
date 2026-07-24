@@ -13,7 +13,7 @@ const filters: { key: FollowTargetType | 'all'; label: LocalizedText }[] = [
   { key: 'all', label: { ta: 'அனைத்தும்', en: 'All' } },
   { key: 'temple', label: { ta: 'கோயில்', en: 'Temple' } },
   { key: 'festival', label: { ta: 'திருவிழா', en: 'Festival' } },
-  { key: 'renovation', label: { ta: 'மறுசீரமைப்பு', en: 'Renovation' } },
+  { key: 'renovation', label: { ta: 'திருப்பணி', en: 'Renovation' } },
   { key: 'district', label: { ta: 'மாவட்டம்', en: 'District' } },
 ];
 

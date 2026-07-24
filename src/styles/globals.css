@@ -22,6 +22,10 @@
   --color-border: #ececec;
 
   --color-success: #16a34a;
+  /* Darker green for small text on white/tinted surfaces — #16a34a fails
+     WCAG AA (4.5:1) at caption size; #166534 passes on both white and the
+     success/12 tint used by Badge. */
+  --color-success-text: #166534;
   --color-warning: #f59e0b;
   --color-danger: #dc2626;
 

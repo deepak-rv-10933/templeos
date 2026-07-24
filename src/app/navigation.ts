@@ -41,7 +41,7 @@ export const adminNav: NavItem[] = [
   { label: { ta: 'முன்பதிவுகள்', en: 'Bookings' }, path: '/admin/bookings', icon: CalendarCheck },
   { label: { ta: 'சேவைகள்', en: 'Services' }, path: '/admin/services', icon: Sparkles },
   { label: { ta: 'நன்கொடைகள்', en: 'Donations' }, path: '/admin/donations', icon: HandCoins },
-  { label: { ta: 'மறுசீரமைப்பு', en: 'Renovation' }, path: '/admin/renovation', icon: Hammer },
+  { label: { ta: 'திருப்பணி', en: 'Renovation' }, path: '/admin/renovation', icon: Hammer },
   { label: { ta: 'ஸ்பான்சர்கள்', en: 'Sponsors' }, path: '/admin/sponsors', icon: Users },
   { label: { ta: 'பயனர்கள்', en: 'Users' }, path: '/admin/users', icon: User },
   { label: { ta: 'அறிக்கைகள்', en: 'Reports' }, path: '/admin/reports', icon: FileBarChart },

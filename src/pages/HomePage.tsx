@@ -7,6 +7,7 @@ import {
 } from '@/hooks/queries';
 import { Container } from '@/components/common/Container';
 import { SectionHeader } from '@/components/common/SectionHeader';
+import { Skeleton } from '@/components/ui/Skeleton';
 import {
   CategoryChip,
   FestivalCard,
@@ -52,9 +53,9 @@ export function HomePage() {
             to="/updates"
           />
           <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {festivals.data?.map((f) => (
-              <FestivalCard key={f.id} festival={f} />
-            ))}
+            {festivals.isLoading
+              ? Array.from({ length: 3 }).map((_, i) => <Skeleton key={i} className="aspect-[16/10] rounded-lg" />)
+              : festivals.data?.map((f) => <FestivalCard key={f.id} festival={f} />)}
           </div>
         </Container>
 
@@ -75,9 +76,9 @@ export function HomePage() {
         <Container>
           <SectionHeader title={t('home.categories')} to="/explore" />
           <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
-            {categories.data?.map((c) => (
-              <CategoryChip key={c.id} category={c} />
-            ))}
+            {categories.isLoading
+              ? Array.from({ length: 6 }).map((_, i) => <Skeleton key={i} className="h-24 rounded-lg" />)
+              : categories.data?.map((c) => <CategoryChip key={c.id} category={c} />)}
           </div>
         </Container>
 
@@ -85,9 +86,9 @@ export function HomePage() {
         <Container>
           <SectionHeader title={t('home.routes')} to="/explore" />
           <div className="grid grid-cols-1 gap-5 lg:grid-cols-3">
-            {routes.data?.map((r) => (
-              <RouteCard key={r.id} route={r} />
-            ))}
+            {routes.isLoading
+              ? Array.from({ length: 3 }).map((_, i) => <Skeleton key={i} className="h-48 rounded-lg" />)
+              : routes.data?.map((r) => <RouteCard key={r.id} route={r} />)}
           </div>
         </Container>
 

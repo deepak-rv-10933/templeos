@@ -1,19 +1,25 @@
+import { Link } from 'react-router-dom';
 import { CalendarDays } from 'lucide-react';
 import type { Festival } from '@/types';
 import { useLocale } from '@/store/locale';
 import { formatDateRange } from '@/utils/format';
+import { temples } from '@/services/mock/db';
 import { Badge } from '@/components/ui/Badge';
 import { SmartImage } from '@/components/ui/SmartImage';
 
-export function FestivalCard({ festival }: { festival: Festival }) {
+/** Set `linkToTemple={false}` when the card already renders on that temple's
+ *  own profile page (its Festivals tab) — linking there would be a no-op. */
+export function FestivalCard({ festival, linkToTemple = true }: { festival: Festival; linkToTemple?: boolean }) {
   const { tx, t, lang } = useLocale();
-  return (
-    <div className="group relative overflow-hidden rounded-lg border border-border shadow-sm">
+  const slug = linkToTemple ? temples.find((tpl) => tpl.id === festival.templeId)?.slug : undefined;
+
+  const inner = (
+    <>
       <div className="aspect-[16/10] overflow-hidden">
         <SmartImage
           src={festival.image}
           alt={tx(festival.name)}
-          className="transition-transform duration-500 group-hover:scale-[1.04]"
+          className={slug ? 'transition-transform duration-500 group-hover:scale-[1.04]' : undefined}
         />
       </div>
       <div className="absolute inset-0 bg-gradient-to-t from-text/80 via-text/10 to-transparent" />
@@ -32,6 +38,18 @@ export function FestivalCard({ festival }: { festival: Festival }) {
           {formatDateRange(festival.startDate, festival.endDate, lang)}
         </p>
       </div>
-    </div>
+    </>
   );
+
+  if (slug) {
+    return (
+      <Link
+        to={`/temple/${slug}`}
+        className="group relative block overflow-hidden rounded-lg border border-border shadow-sm transition-shadow duration-200 hover:shadow-md"
+      >
+        {inner}
+      </Link>
+    );
+  }
+  return <div className="relative overflow-hidden rounded-lg border border-border shadow-sm">{inner}</div>;
 }

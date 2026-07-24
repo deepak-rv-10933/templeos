@@ -35,7 +35,7 @@ export function AdminRenovation() {
   return (
     <ModulePlaceholder
       icon={Hammer}
-      title={{ ta: 'மறுசீரமைப்பு', en: 'Renovation' }}
+      title={{ ta: 'திருப்பணி', en: 'Renovation' }}
       description={{ ta: 'திட்டங்கள், மைல்கற்கள் மற்றும் பட்ஜெட்டை நிர்வகிக்கவும்.', en: 'Manage projects, milestones and budgets.' }}
       features={[
         { ta: 'திட்டங்கள்', en: 'Projects' },

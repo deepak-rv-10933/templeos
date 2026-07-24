@@ -20,8 +20,8 @@ export function AppPromo() {
             </h2>
             <p className="mt-2 text-body text-white/80">
               {tx({
-                ta: 'எங்கள் செயலியைப் பதிவிறக்கி தரிசனம், பூஜைகள் மற்றும் நன்கொடைகளை எங்கிருந்தும் முன்பதிவு செய்யுங்கள்.',
-                en: 'Download our app to book darshan, poojas and donations on the go.',
+                ta: 'எங்கள் செயலியைப் பதிவிறக்கி தரிசனம் மற்றும் பூஜைகளை முன்பதிவு செய்து, எங்கிருந்தும் நன்கொடை அளியுங்கள்.',
+                en: 'Download our app to book darshan and poojas, and donate on the go.',
               })}
             </p>
             <div className="mt-5 flex flex-wrap justify-center gap-3 md:justify-start">
@@ -44,12 +44,12 @@ export function AppPromo() {
 
 function StoreButton({ icon: Icon, top, bottom }: { icon: LucideIcon; top: string; bottom: string }) {
   return (
-    <button className="inline-flex items-center gap-2 rounded-lg border border-white/20 bg-black/40 px-4 py-2 text-left text-white backdrop-blur-sm transition-colors hover:bg-black/60">
+    <div className="inline-flex items-center gap-2 rounded-lg border border-white/20 bg-black/40 px-4 py-2 text-left text-white backdrop-blur-sm">
       <Icon className="h-6 w-6" />
       <span className="leading-tight">
         <span className="block text-[10px] uppercase tracking-wide text-white/70">{top}</span>
         <span className="block text-body font-semibold">{bottom}</span>
       </span>
-    </button>
+    </div>
   );
 }

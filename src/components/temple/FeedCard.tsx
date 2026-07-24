@@ -14,7 +14,7 @@ const kindLabel: Record<FeedKind, LocalizedText> = {
   video: { ta: 'வீடியோ', en: 'Video' },
   'heritage-fact': { ta: 'பாரம்பரியம்', en: 'Heritage' },
   'crowd-alert': { ta: 'கூட்ட எச்சரிக்கை', en: 'Crowd alert' },
-  'renovation-milestone': { ta: 'மறுசீரமைப்பு', en: 'Renovation' },
+  'renovation-milestone': { ta: 'திருப்பணி', en: 'Renovation' },
 };
 
 const kindTone: Partial<Record<FeedKind, 'primary' | 'success' | 'warning' | 'danger'>> = {
